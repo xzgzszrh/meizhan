@@ -1,15 +1,15 @@
 <script setup>
-import {inject, ref} from 'vue'
-import {useLogto} from '@logto/vue'
-import {DialogClose} from '@/components/ui/dialog/index.js'
-import {Loader2, Phone, Trash2, Undo2} from 'lucide-vue-next'
-import {Button} from '@/components/ui/button/index.js'
+import { inject, ref } from 'vue'
+import { useLogto } from '@logto/vue'
+import { DialogClose } from '@/components/ui/dialog/index.js'
+import { Loader2, Phone, Trash2, Undo2 } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button/index.js'
 import axios from 'redaxios'
-import {toast} from 'vue-sonner'
-import {eventBus} from '@/lib/eventBus.js'
-import MfaVerificationDialog from "@/components/Global/MFAHelpers/MfaVerificationDialog.vue";
-import {createReusableTemplate, useMediaQuery} from '@vueuse/core'
-import {API} from "@/lib/apiRouteMap.js";
+import { toast } from 'vue-sonner'
+import { eventBus } from '@/lib/eventBus.js'
+import MfaVerificationDialog from '@/components/Global/MFAHelpers/MfaVerificationDialog.vue'
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
+import { API } from '@/lib/apiRouteMap.js'
 
 const { getAccessToken } = useLogto()
 const isLoading = ref(false)
@@ -43,22 +43,21 @@ async function removeNumber() {
 
 const isDesktop = useMediaQuery('(min-width: 1023px)')
 const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
-
 </script>
 
 <template>
   <UseFooterTemplate>
     <DialogClose as-child>
-      <Button type="button" variant="outline" class="desktop:h-[30px] tablet:w-full">
+      <Button type="button" variant="outline" class="h-10 w-full sm:h-[30px]">
         <Undo2 class="w-4 h-4 mr-2" />
         Cancel
       </Button>
     </DialogClose>
     <Button
-        @click="removeNumber"
-        variant="destructive"
-        class="desktop:h-[30px] tablet:w-full"
-        :disabled="isLoading"
+      @click="removeNumber"
+      variant="destructive"
+      class="h-10 w-full sm:h-[30px]"
+      :disabled="isLoading"
     >
       <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" />
       <Trash2 v-else class="w-4 h-4 mr-2" />
@@ -66,13 +65,18 @@ const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
     </Button>
   </UseFooterTemplate>
 
-  <MfaVerificationDialog title="Remove Phone Number" :icon="Phone" :desc="userData.phone_number" edit>
+  <MfaVerificationDialog
+    title="Remove Phone Number"
+    :icon="Phone"
+    :desc="userData.phone_number"
+    edit
+  >
     <template #body>
-      <div class="flex flex-col items-center align-middle justify-center">
-        <div class="mb-8 w-full">
+      <div class="dialog-form-shell justify-center">
+        <div class="dialog-form-group mb-8 w-full">
           <p class="font-bold text-sm">
-            You can only have one number per account. To change your connected number, remove it first
-            then add a number as normal.
+            You can only have one number per account. To change your connected number, remove it
+            first then add a number as normal.
           </p>
           <br />
           <div class="flex justify-evenly">

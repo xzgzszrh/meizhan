@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useLogto } from '@logto/vue'
-import AccountsRoot from "@/components/Base/AccountsRoot.vue";
-import {eventBus} from "@/lib/eventBus.js";
+import AccountsRoot from '@/components/Base/AccountsRoot.vue'
+import { eventBus } from '@/lib/eventBus.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +56,11 @@ const router = createRouter({
           component: () => import('@/handlers/Connections.vue')
         },
         {
+          path: 'verifications',
+          name: 'My Verifications',
+          component: () => import('@/handlers/MyVerifications.vue')
+        },
+        {
           path: 'yourdata',
           name: 'Your Data',
           component: () => import('@/handlers/YourData.vue')
@@ -64,7 +69,7 @@ const router = createRouter({
           path: 'developer',
           name: 'Developer options',
           component: () => import('@/handlers/DeveloperOptions.vue')
-        },
+        }
       ]
     },
     {
@@ -77,7 +82,7 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/router/CatchAll/404.vue')
-    },
+    }
   ]
 })
 
@@ -90,10 +95,10 @@ router.beforeEach(async (to) => {
     eventBus.emit('AccountLoading', true)
   }
 })
-router.afterEach(async(to) => {
+router.afterEach(async (to) => {
   if (to.name !== 'login' && to.name !== 'callback') {
     eventBus.emit('AccountLoading', false)
   }
-});
+})
 
 export default router

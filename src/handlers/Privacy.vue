@@ -1,42 +1,48 @@
 <script setup>
-import {CardDescription, CardTitle} from '@/components/ui/card/index.js'
-import {BarChart3, Send, TextSearch, UserRoundSearch} from 'lucide-vue-next'
-import MfaVerificationDialog from "@/components/Global/MFAHelpers/MfaVerificationDialog.vue";
+import { BarChart3, Send, TextSearch } from 'lucide-vue-next'
+import MfaVerificationDialog from '@/components/Global/MFAHelpers/MfaVerificationDialog.vue'
+import PageSection from '@/components/Base/PageSection.vue'
 </script>
 
 <template>
-  <div class="w-screen desktop:w-[600px] phone:px-4 tablet:px-32">
-    <CardTitle class="my-4">Privacy and Data Usage</CardTitle>
-    <CardDescription
-      >View and manage information you choose to share with us and configure settings to enhance
-      your account privacy.</CardDescription
+  <PageSection
+    title="隐私与数据使用"
+    :icon="TextSearch"
+    badge="即将开放更多设置"
+    description="查看你愿意共享的信息，以及后续将支持的账户隐私保护能力。当前模块保持原有占位逻辑不变，仅全面汉化并重构展示方式。"
+  >
+    <div
+      class="section-card flex flex-col gap-4 p-5 md:col-span-2 md:flex-row md:items-center md:justify-between"
     >
-    <div class="flex tablet:flex-col desktop:gap-16 mt-12 items-center justify-center align-middle mobile:gap-2">
-      <MfaVerificationDialog title="Third Party Data Access" :icon="TextSearch" desc="Block All" disabled />
-      <p class="desktop:w-3/4 text-sm text-center">
-        Control how third party applications can access your account data. Fully blocking access
-        will cause your details to be omitted when requested.
-      </p>
+      <div class="md:w-2/3">
+        <h3 class="text-lg font-semibold">第三方数据访问</h3>
+        <p class="mt-2 text-sm text-muted-foreground">
+          控制第三方应用访问你账户资料的方式。完全阻止后，相关产品在请求时将无法获取你的详细信息。
+        </p>
+      </div>
+      <MfaVerificationDialog title="第三方数据访问" :icon="TextSearch" desc="全部阻止" disabled />
     </div>
-    <div class="flex tablet:flex-col desktop:gap-16 mt-4 items-center justify-center align-middle mobile:gap-2">
-      <MfaVerificationDialog title="Profile Visibility" :icon="UserRoundSearch" desc="Friends Only" disabled />
-      <p class="desktop:w-3/4 text-sm text-center">
-        Change who can search for view and your public and/or private profile.
-      </p>
+    <div
+      class="section-card flex flex-col gap-4 p-5 md:col-span-2 md:flex-row md:items-center md:justify-between"
+    >
+      <div class="md:w-2/3">
+        <h3 class="text-lg font-semibold">分析模式</h3>
+        <p class="mt-2 text-sm text-muted-foreground">
+          分析数据可帮助我们优化产品体验。启用后，将基于隐私化处理后的账户行为数据生成统计信息。
+        </p>
+      </div>
+      <MfaVerificationDialog title="分析模式" :icon="BarChart3" desc="当前未加入" disabled />
     </div>
-    <div class="flex tablet:flex-col desktop:gap-16 mt-4 items-center justify-center align-middle mobile:gap-2">
-      <MfaVerificationDialog title="Analytics Mode" :icon="BarChart3" desc="Opted Out" disabled />
-      <p class="desktop:w-3/4 text-sm text-center">
-        Web Analytics are used by all of our products and services. You can help improve them by
-        sharing privatised analytics from your account.
-      </p>
+    <div
+      class="section-card flex flex-col gap-4 p-5 md:col-span-2 md:flex-row md:items-center md:justify-between"
+    >
+      <div class="md:w-2/3">
+        <h3 class="text-lg font-semibold">邮箱隐私</h3>
+        <p class="mt-2 text-sm text-muted-foreground">
+          未来可通过代理邮箱保护真实地址，减少在其他产品中的暴露风险。
+        </p>
+      </div>
+      <MfaVerificationDialog title="邮箱隐私" :icon="Send" desc="隐藏并启用代理邮箱" disabled />
     </div>
-    <div class="flex tablet:flex-col desktop:gap-16 mt-4 items-center justify-center align-middle mobile:gap-2">
-      <MfaVerificationDialog title="Email Privacy" :icon="Send" desc="Hide and proxy mail" disabled />
-      <p class="desktop:w-3/4 text-sm text-center">
-        Enabling Email Privacy will mask your email address in all products and services. You will
-        also be assigned a private email for receiving email.
-      </p>
-    </div>
-  </div>
+  </PageSection>
 </template>

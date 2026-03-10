@@ -107,14 +107,14 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
       <p>You currently have a App Authenticator setup.</p>
       <p class="text-xs">Created at {{ mfaMethods.totp.createdAt }}</p>
       <Button variant="destructive" class="desktop:h-[30px] tablet:w-full" :disabled="isLoading" @click="deleteAppAuthenticator">
-        <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" color="black" />
+        <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin text-current" />
         Remove Authenticator
       </Button>
     </div>
     <div v-else>
       <div v-if="!mfaSetup">
         <Button class="desktop:h-[30px]" @click="setupAppAuthenticator" :disabled="isLoading">
-          <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" color="black" />
+          <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin text-current" />
           {{ isLoading ? 'Generating...' : 'Setup App Authenticator' }}
         </Button>
       </div>
@@ -128,7 +128,7 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
               <Tooltip>
                 <TooltipTrigger>
                   <Button type="submit" @click="copy(appMfaData.AppAuthenticator.secret)">
-                    <component :is="copied ? ClipboardCheck : ClipboardCopy" color="black" />
+                    <component :is="copied ? ClipboardCheck : ClipboardCopy" class="text-current" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -150,11 +150,11 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
           <p class="text-xs">You will only see these once</p>
           <div class="flex items-center gap-x-1">
             <Button type="submit" @click="downloadFile" class="desktop:h-[30px]">
-              <FileDown color="black" class="pr-1" />
+              <FileDown class="pr-1 text-current" />
               Download Codes
             </Button>
             <Button type="submit" @click="copy(appMfaData.BackupCodes.codes)" variant="secondary" class="desktop:h-[30px]">
-              <component :is="copied ? ClipboardCheck : ClipboardCopy" color="black" class="pr-1" />
+              <component :is="copied ? ClipboardCheck : ClipboardCopy" class="pr-1 text-current" />
               {{ copied ? 'Copied!' : 'Copy to Clipboard' }}
             </Button>
           </div>

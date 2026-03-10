@@ -1,42 +1,70 @@
 <script setup>
-import {inject, provide} from 'vue'
-import {CardDescription, CardTitle} from '@/components/ui/card/index.js'
-import AddPhoneNumberDialog from '@/components/Pages/SignInAndSecurity/AddPhoneNumberDialog.vue'
-import EditPhoneNumberDialog from '@/components/Pages/SignInAndSecurity/RemovePhoneNumberDialog.vue'
-import EditEmailAddress from '@/components/Pages/SignInAndSecurity/EditEmailAddress.vue'
-import EditMfaMethods from '@/components/Pages/SignInAndSecurity/EditMfaMethods.vue'
-import UpdatePasswordDialog from '@/components/Pages/SignInAndSecurity/UpdatePasswordDialog.vue'
-import EditLoginVerification from "@/components/Pages/SignInAndSecurity/EditLoginVerification.vue";
-import {Cog} from "lucide-vue-next";
+import { inject } from 'vue'
+import PageSection from '@/components/Base/PageSection.vue'
+import AccountLinkCard from '@/components/Base/AccountLinkCard.vue'
+import EditLoginVerification from '@/components/Pages/SignInAndSecurity/EditLoginVerification.vue'
+import { Cog, KeyRound, Mail, Phone, Shield, ShieldCheck, SmartphoneNfc } from 'lucide-vue-next'
 
 const userData = inject('userData')
-const mfaOptions = inject('mfaMethods')
-
-provide('mfaMethods', mfaOptions)
 </script>
 
 <template>
-  <div class="w-screen desktop:w-[600px] phone:px-4 tablet:px-32 ">
-    <CardTitle class="flex my-4">
-      <Cog class="mr-1" />
-      Sign-In and Security
-    </CardTitle>
-    <CardDescription>
-      Manage settings related to signing in to your account, account security, as well as how to
-      recover your data when you're having trouble signing in.
-    </CardDescription>
-    <div class="desktop:flex space-y-4 desktop:space-y-0 desktop:gap-4 mt-12">
-      <EditEmailAddress />
-      <component :is="userData.phone_number ? EditPhoneNumberDialog : AddPhoneNumberDialog" />
-    </div>
-    <div class="desktop:flex space-y-4 desktop:space-y-0 desktop:gap-4 mt-4">
-      <UpdatePasswordDialog />
-      <EditMfaMethods />
-    </div>
-    <div class="desktop:flex space-y-4 desktop:space-y-0 desktop:gap-4 mt-4">
-      <EditLoginVerification />
-    </div>
-  </div>
+  <PageSection
+    title="登录与安全"
+    :icon="Cog"
+    badge="安全中心"
+    description="统一管理邮箱、手机号、密码、多重验证以及登录保护策略。功能逻辑保持不变，仅界面全面重构为现代化中文体验。"
+  >
+    <AccountLinkCard
+      title="邮箱"
+      :icon="Mail"
+      :desc="userData.email || '前往 Logto 账号中心添加邮箱'"
+      path="/account/email"
+    />
+    <AccountLinkCard
+      title="手机号"
+      :icon="Phone"
+      :desc="userData.phone_number || '前往 Logto 账号中心绑定手机号'"
+      path="/account/phone"
+    />
+    <AccountLinkCard
+      title="密码"
+      :icon="KeyRound"
+      desc="前往 Logto 账号中心更新登录密码"
+      path="/account/password"
+    />
+    <AccountLinkCard
+      title="Authenticator"
+      :icon="ShieldCheck"
+      desc="管理验证器应用（Google/Microsoft Authenticator）"
+      path="/account/authenticator-app"
+    />
+    <AccountLinkCard
+      title="备份码生成"
+      :icon="Shield"
+      desc="生成新的备用恢复码"
+      path="/account/backup-codes/generate"
+    />
+    <AccountLinkCard
+      title="备份码管理"
+      :icon="Shield"
+      desc="查看或重置现有备用恢复码"
+      path="/account/backup-codes/manage"
+    />
+    <AccountLinkCard
+      title="Passkey 添加"
+      :icon="SmartphoneNfc"
+      desc="添加新的 Passkey 登录方式"
+      path="/account/passkey/add"
+    />
+    <AccountLinkCard
+      title="Passkey 管理"
+      :icon="SmartphoneNfc"
+      desc="查看并管理已绑定的 Passkey"
+      path="/account/passkey/manage"
+    />
+    <EditLoginVerification />
+  </PageSection>
 </template>
 
 <style scoped></style>

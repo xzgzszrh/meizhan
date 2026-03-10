@@ -1,21 +1,27 @@
 <script setup>
-import {onMounted, ref} from 'vue'
-import {Loader2, Save, Undo2} from 'lucide-vue-next'
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card/index.js'
+import { onMounted, ref } from 'vue'
+import { Loader2, Save, Undo2 } from 'lucide-vue-next'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card/index.js'
 import SingleGalleryAvatar from '@/components/Base/Avatar/SingleGalleryAvatar.vue'
-import {Button} from '@/components/ui/button/index.js'
+import { Button } from '@/components/ui/button/index.js'
 import axios from 'redaxios'
-import {toast} from 'vue-sonner'
-import {eventBus} from '@/lib/eventBus.js'
-import {useLogto} from '@logto/vue'
-import {DialogClose, DialogFooter} from '@/components/ui/dialog/index.js'
+import { toast } from 'vue-sonner'
+import { eventBus } from '@/lib/eventBus.js'
+import { useLogto } from '@logto/vue'
+import { DialogClose, DialogFooter } from '@/components/ui/dialog/index.js'
 import * as jdenticon from 'jdenticon'
-import Hashicon from 'hashicon';
-import {getAvatar as generateMonsterID} from '@/lib/identicons/monsterid.js'
+import Hashicon from 'hashicon'
+import { getAvatar as generateMonsterID } from '@/lib/identicons/monsterid.js'
 import Blockies from '@/lib/identicons/blockies.js'
-import {DrawerFooter} from "@/components/ui/drawer/index.js";
-import {createReusableTemplate, useMediaQuery} from "@vueuse/core";
-import {API} from "@/lib/apiRouteMap.js";
+import { DrawerFooter } from '@/components/ui/drawer/index.js'
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
+import { API } from '@/lib/apiRouteMap.js'
 
 const avatars = ref([])
 const { getAccessToken } = useLogto()
@@ -25,63 +31,66 @@ const isLoading = ref(false)
 
 // god i hate jdenticon so much. they make it so difficult to do the most basic shit. fuck this library
 const createJdenticon = (hash) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 128;
-  canvas.height = 128;
-  const avatar = canvas.getContext('2d');
-  jdenticon.drawIcon(avatar, hash, 128);
-  return canvas.toDataURL();
+  const canvas = document.createElement('canvas')
+  canvas.width = 128
+  canvas.height = 128
+  const avatar = canvas.getContext('2d')
+  jdenticon.drawIcon(avatar, hash, 128)
+  return canvas.toDataURL()
 }
 
-function dec2hex (dec) {
-  return dec.toString(16).padStart(2, "0")
+function dec2hex(dec) {
+  return dec.toString(16).padStart(2, '0')
 }
 
-function generateId (len) {
+function generateId(len) {
   const arr = new Uint8Array((len || 40) / 2)
   window.crypto.getRandomValues(arr)
   return Array.from(arr, dec2hex).join('')
 }
 
 const generateAvatars = async (loadMore = false) => {
-  let identiconUrls = [];
+  let identiconUrls = []
   let ii = 0
   for (let i = 0; i < 32; i++) {
-    if (ii === 3) { ii = 0 } else { ii++ }
+    if (ii === 3) {
+      ii = 0
+    } else {
+      ii++
+    }
     switch (ii) {
       case 0:
         identiconUrls.push({
           id: i,
           imageUrl: createJdenticon(generateId(32))
-        });
-        break;
+        })
+        break
       case 1:
         identiconUrls.push({
           id: i,
-          imageUrl:
-            Hashicon(generateId(32), {
+          imageUrl: Hashicon(generateId(32), {
             size: 128
-          }).toDataURL(),
-        });
-        break;
+          }).toDataURL()
+        })
+        break
       case 2:
         identiconUrls.push({
           id: i,
-          imageUrl: generateMonsterID(generateId(32), 128, 128),
-        });
-        break;
+          imageUrl: generateMonsterID(generateId(32), 128, 128)
+        })
+        break
       case 3:
         // eslint-disable-next-line no-case-declarations
         const options = {
           seed: generateId(32),
           size: 8,
-          scale: 16,
-        };
+          scale: 16
+        }
         identiconUrls.push({
           id: i,
           imageUrl: Blockies.create(options).toDataURL()
-        });
-        break;
+        })
+        break
     }
   }
   if (loadMore) {
@@ -101,7 +110,7 @@ onMounted(() => generateAvatars())
 
 const fetchGalleryAvatar = async () => {
   try {
-    const blob = await fetch(selectedAvatarUrl.value).then(it => it.blob())
+    const blob = await fetch(selectedAvatarUrl.value).then((it) => it.blob())
     const formData = new FormData()
     formData.append('file', blob, 'image.png')
     return formData
@@ -115,24 +124,22 @@ const uploadFile = async () => {
   const accessToken = await getAccessToken(import.meta.env.VITE_LOGTO_CORE_RESOURCE)
   const formData = await fetchGalleryAvatar()
   try {
-    const response = await axios.post(
-      API.AVATAR.UPLOAD,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        }})
+    const response = await axios.post(API.AVATAR.UPLOAD, formData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
     if (response.status === 204) {
-      toast.success('Success!', { description: 'Your changes were saved successfully.' })
+      toast.success('头像已更新', { description: '新的系统头像已经应用到你的账户。' })
       eventBus.emit('refreshUserData', true)
     }
   } catch (error) {
     console.log('Error uploading file:', error)
     if (error.response.status === 500) {
-      toast.error('Error saving changes:', { description: 'Service Unavailable. Try again later' })
+      toast.error('保存失败', { description: '服务暂时不可用，请稍后重试。' })
     } else if (error.response.status === 406) {
-      toast.warning('Please Upload a Different Image:', {
-        description: 'The image you have selected is not suitable as a avatar'
+      toast.warning('头像不可用', {
+        description: '当前所选头像无法使用，请换一个再试。'
       })
     }
   } finally {
@@ -149,25 +156,21 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
     <DialogClose as-child>
       <Button type="button" variant="outline" class="desktop:h-[30px]">
         <Undo2 class="w-4 h-4 mr-2" />
-        Cancel
+        取消
       </Button>
     </DialogClose>
     <Button @click="uploadFile" class="desktop:h-[30px]" :disabled="!selectedAvatarId || isLoading">
-      <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" color="black" />
+      <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin text-current" />
       <Save v-else class="w-4 h-4 mr-2" />
-      {{ isLoading ? 'Processing...' : 'Save' }}
+      {{ isLoading ? '处理中...' : '保存头像' }}
     </Button>
   </UseFooterTemplate>
 
   <div class="desktop:space-y-4">
     <Card class="desktop:h-[420px]">
       <CardHeader>
-        <CardTitle class="tablet:text-lg">
-          Choose a Generated Avatar
-        </CardTitle>
-        <CardDescription>
-          Avatars based on different generation algorithms.
-        </CardDescription>
+        <CardTitle class="tablet:text-lg">选择系统生成头像</CardTitle>
+        <CardDescription> 从多种生成风格中选择一张，快速替换当前头像。 </CardDescription>
       </CardHeader>
       <CardContent class="space-y-2 overflow-y-auto max-h-[200px]">
         <div class="p-4 flex flex-col items-center align-middle">
@@ -180,7 +183,7 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
               :selected="selectedAvatarId === `${avatar.id}-${index}`"
             />
           </div>
-          <Button variant="link" @click="loadMoreAvatars">Load More</Button>
+          <Button variant="link" @click="loadMoreAvatars">加载更多</Button>
         </div>
       </CardContent>
     </Card>

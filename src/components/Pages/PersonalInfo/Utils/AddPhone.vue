@@ -6,7 +6,7 @@ import {Plus} from 'lucide-vue-next'
 <template>
   <div class="space-y-2">
     <p class="text-sm">You do not have a phone number attached to your account.</p>
-    <Button class="rounded-xl font-bold h-8" variant="secondary">
+    <Button class="h-8 font-bold" variant="secondary">
       <Plus class="pr-1" />
       Add Phone Number
     </Button>

@@ -31,7 +31,7 @@ const userData = inject('userData')
           />
           <div class="absolute inset-y-0 right-0 flex items-center pt-7 pr-1">
             <MoreHorizontal v-if="isChecking" />
-            <UserRoundCheck v-else-if="isOk && nameChecked" class="text-white" />
+            <UserRoundCheck v-else-if="isOk && nameChecked" class="text-emerald-500" />
             <Ban v-else-if="!isOk && nameChecked" class="text-red-500" />
           </div>
         </div>
@@ -55,15 +55,15 @@ const userData = inject('userData')
           />
           <div class="absolute inset-y-0 right-0 flex items-center pt-7 pr-1">
             <MoreHorizontal v-if="isChecking" />
-            <UserRoundCheck v-else-if="isOk && nameChecked" class="text-white" />
+            <UserRoundCheck v-else-if="isOk && nameChecked" class="text-emerald-500" />
             <Ban v-else-if="!isOk && nameChecked" class="text-red-500" />
           </div>
         </div>
       </div>
       <div class="grid ">
         <Button>
-          <SquareArrowOutUpRight color="black" class="w-5 h-5 mr-2" />
-          <p class="font-bold text-black">Preview Profile</p>
+          <SquareArrowOutUpRight class="w-5 h-5 mr-2 text-current" />
+          <p class="font-bold text-current">Preview Profile</p>
         </Button>
       </div>
     </div>

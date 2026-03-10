@@ -7,11 +7,10 @@ const props = defineProps({
 </script>
 
 <template>
-  <!-- flex flex-col-reverse sm:flex-row sm:justify-end  -->
   <div
     :class="
       cn(
-        'flex absolute w-full justify-between bottom-4 sm:gap-x-2 px-5 align-middle items-center',
+        'flex w-full flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end',
         props.class
       )
     "

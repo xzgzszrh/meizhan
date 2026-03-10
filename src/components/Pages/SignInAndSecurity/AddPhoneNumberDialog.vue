@@ -1,19 +1,19 @@
 <script setup>
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import axios from 'redaxios'
-import {useLogto} from '@logto/vue'
-import {VueTelInput} from 'vue-tel-input'
-import {Button} from '@/components/ui/button/index.js'
-import {DialogClose} from '@/components/ui/dialog/index.js'
-import {Label} from '@/components/ui/label/index.js'
-import {Loader, Phone, PhoneMissed, ShieldEllipsis, Undo2} from 'lucide-vue-next'
-import {toast} from 'vue-sonner'
+import { useLogto } from '@logto/vue'
+import { VueTelInput } from 'vue-tel-input'
+import { Button } from '@/components/ui/button/index.js'
+import { DialogClose } from '@/components/ui/dialog/index.js'
+import { Label } from '@/components/ui/label/index.js'
+import { Loader, Phone, PhoneMissed, ShieldEllipsis, Undo2 } from 'lucide-vue-next'
+import { toast } from 'vue-sonner'
 import MfaCodeInput from '@/components/Global/MFAHelpers/MfaCodeInput.vue'
-import {eventBus} from '@/lib/eventBus.js'
-import MfaVerificationDialog from "@/components/Global/MFAHelpers/MfaVerificationDialog.vue";
-import {createReusableTemplate, useMediaQuery} from '@vueuse/core'
-import PrivacyFooter from "@/components/Global/PrivacyFooter.vue";
-import {API} from "@/lib/apiRouteMap.js";
+import { eventBus } from '@/lib/eventBus.js'
+import MfaVerificationDialog from '@/components/Global/MFAHelpers/MfaVerificationDialog.vue'
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
+import PrivacyFooter from '@/components/Global/PrivacyFooter.vue'
+import { API } from '@/lib/apiRouteMap.js'
 
 const { getAccessToken } = useLogto()
 const phone = ref('')
@@ -65,7 +65,7 @@ async function sendVerificationSMS() {
   console.log(phone.value)
   try {
     const response = await axios.post(
-        API.MFA.NEW.SMS.PUSH,
+      API.MFA.NEW.SMS.PUSH,
       {
         encryptedPhoneNumber: phone.value
       },
@@ -88,7 +88,7 @@ async function sendVerificationSMS() {
     smsSent.value = false
     isLoading.value = false
     readyToSend.value = true
-    phone.value = null;
+    phone.value = null
   } finally {
     isLoading.value = false
     resendCodeTimer.value = 60
@@ -151,14 +151,16 @@ async function verifyNumber() {
   }
 }
 
-onMounted(() => { //this needs to be done because the css file that comes with vue-tel-input is gigantic and i had to apply manual changes and optimisations
+onMounted(() => {
+  //this needs to be done because the css file that comes with vue-tel-input is gigantic and i had to apply manual changes and optimisations
   isLoading.value = true
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdn.vstatic.net/content/lHvXlqL2OkmpAMi9x15E/mxs.app/Stylesheet/TelInput.min.css'; // TODO desperately needs to be fixed
-  document.head.appendChild(link);
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href =
+    'https://cdn.vstatic.net/content/lHvXlqL2OkmpAMi9x15E/mxs.app/Stylesheet/TelInput.min.css' // TODO desperately needs to be fixed
+  document.head.appendChild(link)
   isLoading.value = false
-});
+})
 
 const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
 const isDesktop = useMediaQuery('(min-width: 1023px)')
@@ -168,16 +170,16 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
   <UseFooterTemplate>
     <PrivacyFooter v-if="!isDesktop" />
     <DialogClose as-child>
-      <Button type="button" variant="outline" class="desktop:h-[30px] tablet:w-full">
+      <Button type="button" variant="outline" class="h-10 w-full sm:h-[30px]">
         <Undo2 class="w-4 h-4 mr-2" />
         Cancel
       </Button>
     </DialogClose>
     <PrivacyFooter v-if="isDesktop" />
     <Button
-        @click="verifyNumber"
-        class="desktop:h-[30px] tablet:w-full"
-        :disabled="!isNumberValid || !phone || (resendCodeTimer > 0 && !readyToSend)"
+      @click="verifyNumber"
+      class="h-10 w-full sm:h-[30px]"
+      :disabled="!isNumberValid || !phone || (resendCodeTimer > 0 && !readyToSend)"
     >
       <ShieldEllipsis class="w-4 h-4 mr-2" />
       Verify
@@ -187,11 +189,8 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
   <MfaVerificationDialog title="Phone Number" :icon="PhoneMissed" desc="Number Not Added">
     <template #body>
       <transition name="fade" mode="out-in">
-        <div
-            v-if="!isLoading && !smsSent"
-            class="w-full h-full flex flex-col gap-4 pb-4 items-center align-middle mt-5"
-        >
-          <div class="grid w-6/8 max-w-sm items-center gap-1.5 relative">
+        <div v-if="!isLoading && !smsSent" class="dialog-form-shell mt-5 pb-4">
+          <div class="dialog-form-group grid items-center gap-1.5 relative">
             <Label for="email" class="flex font-bold w-full justify-between">
               Enter Number
               <span v-if="isNumberValid && !isEditing" class="text-xs text-green-500">
@@ -202,14 +201,14 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
               </span>
             </Label>
             <vue-tel-input
-                v-model="phone"
-                mode="international"
-                default-country="au"
-                :dropdown-options="dropdownOptions"
-                :valid-characters-only="true"
-                :preferred-countries="['au', 'nz', 'us', 'gb', 'ca']"
-                class="w-full"
-                @validate="checkNumber"
+              v-model="phone"
+              mode="international"
+              default-country="au"
+              :dropdown-options="dropdownOptions"
+              :valid-characters-only="true"
+              :preferred-countries="['au', 'nz', 'us', 'gb', 'ca']"
+              class="w-full"
+              @validate="checkNumber"
             >
             </vue-tel-input>
             <div class="absolute inset-y-0 right-0 flex items-center pt-5 pr-1">
@@ -227,10 +226,10 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
         </div>
         <div v-else-if="!isLoading && !isEditing && smsSent">
           <MfaCodeInput
-              :resend-code-timer="resendCodeTimer"
-              @codeComplete="handleCodeComplete"
-              @resendCode="handleCodeResend"
-              @changeInput="handleChangeInput"
+            :resend-code-timer="resendCodeTimer"
+            @codeComplete="handleCodeComplete"
+            @resendCode="handleCodeResend"
+            @changeInput="handleChangeInput"
           />
         </div>
       </transition>

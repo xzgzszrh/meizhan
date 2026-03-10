@@ -29,10 +29,10 @@ defineProps({
           >
             {{ type }}
           </td>
-          <td class="px-4 py-2 whitespace-normal text-sm text-gray-500 min-w-[175px] break-words">
+          <td class="px-4 py-2 whitespace-normal text-sm text-muted-foreground min-w-[175px] break-words">
             {{ value }}
           </td>
-          <td v-if="verified" class="px-4 pl-9 whitespace-normal text-sm text-gray-500 break-words">
+          <td v-if="verified" class="px-4 pl-9 whitespace-normal text-sm text-muted-foreground break-words">
             <VerifiedDetails
               :user-data="userData"
               :detail-verified="detailVerified"

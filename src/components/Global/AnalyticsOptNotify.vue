@@ -102,11 +102,11 @@ const cookieFlow = () => {
         <div class="flex flex-col space-y-2">
           <ToastAction as-child alt-text="Goto schedule to undo">
             <!--suppress HtmlUnknownAttribute -->
-            <button class="hover:text-black" :onclick="doTrack">Accept</button>
+            <button class="hover:text-foreground" :onclick="doTrack">Accept</button>
           </ToastAction>
           <ToastAction as-child alt-text="Goto schedule to undo">
             <!--suppress HtmlUnknownAttribute -->
-            <button class="hover:text-black" :onclick="doIgnore">Opt Out</button>
+            <button class="hover:text-foreground" :onclick="doIgnore">Opt Out</button>
           </ToastAction>
         </div>
       </div>

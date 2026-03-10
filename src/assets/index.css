@@ -4,52 +4,56 @@
 
 @layer base {
   :root {
-    --base: #000;
-    --base-hover: #2A2A2AFF;
-    --background: 191 61% 99%;
-    --foreground: 191 66% 2%;
-    --muted: 161 31% 95%;
-    --muted-foreground: 161 2% 28%;
-    --popover: 191 61% 98%;
-    --popover-foreground: 191 66% 1%;
-    --card: 191 61% 98%;
-    --card-foreground: 191 66% 1%;
-    --border: 191 13% 91%;
-    --input: 191 13% 91%;
-    --primary: 191 85% 86%;
-    --primary-foreground: 191 85% 6%;
-    --secondary: 161 85% 86%;
-    --secondary-foreground: 161 85% 6%;
-    --accent: 221 85% 86%;
-    --accent-foreground: 221 85% 26%;
-    --destructive: 20 91% 34%;
+    --base: #7d173f;
+    --base-hover: #6329bb;
+    --background: 330 36% 97%;
+    --foreground: 329 29% 14%;
+    --muted: 317 24% 92%;
+    --muted-foreground: 329 14% 35%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 329 29% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 329 29% 14%;
+    --border: 319 24% 84%;
+    --input: 319 24% 84%;
+    --primary: 313 61% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 316 26% 94%;
+    --secondary-foreground: 327 28% 22%;
+    --accent: 308 40% 92%;
+    --accent-foreground: 314 48% 25%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 191 85% 86%;
-    --radius: 0.5rem;
+    --ring: 266 75% 60%;
+    --radius: 1rem;
+    --radius-control: var(--radius);
+    --radius-overlay: calc(var(--radius) + 4px);
+    --radius-surface: calc(var(--radius) + 8px);
+    --radius-shell: calc(var(--radius) + 12px);
   }
 
   .dark {
-    --base: #d9d5d0;
-    --base-hover: #fff;
-    --background: 191 38% 2%;
-    --foreground: 191 40% 99%;
-    --muted: 161 31% 5%;
-    --muted-foreground: 161 2% 72%;
-    --popover: 191 38% 3%;
+    --base: #e58ab4;
+    --base-hover: #f0bed7;
+    --background: 336 10% 9%;
+    --foreground: 0 0% 95%;
+    --muted: 330 8% 15%;
+    --muted-foreground: 330 6% 68%;
+    --popover: 336 10% 11%;
     --popover-foreground: 0 0% 100%;
-    --card: 191 38% 3%;
+    --card: 336 9% 12%;
     --card-foreground: 0 0% 100%;
-    --border: 191 13% 14%;
-    --input: 191 13% 14%;
-    --primary: 191 85% 86%;
-    --primary-foreground: 191 85% 6%;
-    --secondary: 161 85% 86%;
-    --secondary-foreground: 161 85% 6%;
-    --accent: 221 85% 86%;
-    --accent-foreground: 221 85% 26%;
-    --destructive: 20 91% 60%;
-    --destructive-foreground: 20 91% 0%;
-    --ring: 191 85% 86%;
+    --border: 330 8% 22%;
+    --input: 330 8% 22%;
+    --primary: 326 66% 63%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 8% 18%;
+    --secondary-foreground: 0 0% 90%;
+    --accent: 330 10% 21%;
+    --accent-foreground: 0 0% 93%;
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 326 66% 63%;
   }
 }
 
@@ -64,6 +68,13 @@
     }
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    background-image: none;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .dark body {
+    background-image: none;
   }
 }

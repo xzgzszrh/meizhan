@@ -9,5 +9,19 @@ kv_namespaces = [
 	{ binding = "UsernameChangeTimelimit", id = "102d5b07a70543f193e11f8bd42d8dfd" }
 ]
 
+[vars]
+VITE_LOGTO_ENDPOINT = "https://auth.sh.creativone.cn"
+VITE_LOGTO_APPID = "6aa8l1189gr6fwhkulr4h"
+VITE_LOGTO_CORE_RESOURCE = "https://default.logto.app/api"
+VITE_LOGTO_RESOURCES = "[\"https://default.logto.app/api\"]"
+VITE_ROOT = "http://127.0.0.1:8788"
+VITE_LOGTO_ACCOUNT_URL = "https://auth.sh.creativone.cn"
+VITE_SUPPORT_EMAIL = "support@creativone.cn"
+VITE_LEGAL_URL = "https://sh.creativone.cn/legal"
+LOGTO_DOMAIN = "https://auth.sh.creativone.cn"
+LOGTO_DEFAULT_RESOURCE = "https://default.logto.app/api"
+AVATAR_API = ""
+ENABLE_NSFW_CHECK = 0
+
 [placement]
 mode = "smart"

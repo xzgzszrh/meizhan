@@ -1,36 +1,47 @@
 <script setup>
-import {onUnmounted, ref} from 'vue'
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from '@/components/ui/collapsible/index.js'
-import {Card} from '@/components/ui/card/index.js'
-import {ChevronDown, Link2, Link2Off, Loader2} from 'lucide-vue-next'
-import {Button} from '@/components/ui/button/index.js'
-import {eventBus} from '@/lib/eventBus.js'
-import axios from 'redaxios';
-import {toast} from "vue-sonner";
-import {useLogto} from '@logto/vue'
-import {useMediaQuery} from "@vueuse/core";
-import {API} from "@/lib/apiRouteMap.js";
+import { onUnmounted, ref } from 'vue'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from '@/components/ui/collapsible/index.js'
+import { Card } from '@/components/ui/card/index.js'
+import { ChevronDown, Link, Link2, Link2Off, Loader2 } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button/index.js'
+import { eventBus } from '@/lib/eventBus.js'
+import axios from 'redaxios'
+import { toast } from 'vue-sonner'
+import { useLogto } from '@logto/vue'
+import { useMediaQuery } from '@vueuse/core'
+import { API } from '@/lib/apiRouteMap.js'
 
 const { getAccessToken } = useLogto()
 const isLoading = ref(false)
 
 const props = defineProps({
   disabled: Boolean,
-  image: String,
   icon: Object,
+  target: {
+    type: String,
+    required: true
+  },
   service: {
     type: String,
     required: true
   },
-  linked: Boolean
+  linked: Boolean,
+  description: {
+    type: String,
+    default: ''
+  }
 })
 
 const isOpen = ref(false)
 function closeOther() {
-  eventBus.emit('flipCollapsibleValues', props.service)
+  eventBus.emit('flipCollapsibleValues', props.target)
 }
 const handleStateChange = (data) => {
-  if (data !== props.service) {
+  if (data !== props.target) {
     isOpen.value ? (isOpen.value = false) : (isOpen.value = false)
   }
 }
@@ -41,113 +52,139 @@ async function removeConnector() {
   const accessToken = await getAccessToken(import.meta.env.VITE_LOGTO_CORE_RESOURCE)
   try {
     const response = await axios.post(
-        API.CONNECTORS.REMOVE(props.service.toLowerCase()),
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
+      API.CONNECTORS.REMOVE(props.target),
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
         }
+      }
     )
     if (response.status === 204) {
-      toast.success('Connector Removed Successfully', {
-        description: 'Remember to revoke access via your connectors account management.'
+      toast.success(`已解绑 ${props.service}`, {
+        description: '如有需要，也可以前往对应平台撤销该应用授权。'
       })
     }
   } catch (error) {
-    toast.error('Error Removing Connector:', { description: 'Service Unavailable. Try again later' });
+    toast.error(`解绑 ${props.service} 失败`, { description: '服务暂时不可用，请稍后再试。' })
   } finally {
-    isLoading.value = false;
-    isOpen.value = false;
-    eventBus.emit('refreshUserData', true);
+    isLoading.value = false
+    isOpen.value = false
+    eventBus.emit('refreshUserData', true)
   }
 }
 
-const disableLinkButton = ref(false);
+const disableLinkButton = ref(false)
 
-let windowChecker = null;
-let authWindow = null;
+let windowChecker = null
+let authWindow = null
 
 const beginAuthorizationFlow = () => {
-  disableLinkButton.value = true;
-  const url = `/oauth/connectors/new/${props.service.toLowerCase()}`;
-  const width = 400;
-  const height = 700;
-  const left = (screen.width / 2) - (width / 2);
-  const top = (screen.height / 2) - (height / 2);
+  if (props.disabled || disableLinkButton.value) {
+    return
+  }
+
+  disableLinkButton.value = true
+  const url = `/oauth/connectors/new/${props.target}`
+  const width = 400
+  const height = 700
+  const left = screen.width / 2 - width / 2
+  const top = screen.height / 2 - height / 2
   authWindow = window.open(
-      url,
-      'AuthorizationWindow',
-      `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
-  );
+    url,
+    'AuthorizationWindow',
+    `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+  )
   windowChecker = setInterval(() => {
     if (authWindow && authWindow.closed) {
-      eventBus.emit('refreshUserData', true);
-      clearInterval(windowChecker);
+      eventBus.emit('refreshUserData', true)
+      disableLinkButton.value = false
+      clearInterval(windowChecker)
     }
-  }, 500);
-};
+  }, 500)
+}
 
-onUnmounted(cleanup)
+onUnmounted(() => {
+  cleanup()
+  if (windowChecker) {
+    clearInterval(windowChecker)
+  }
+})
 
 const isDesktop = useMediaQuery('(min-width: 1023px)')
 </script>
 
 <template>
   <Card
-    class="w-full bg-gradient-to-tl from-[#6c888e] to-30% transition-all duration-200 hover:to-60% hover:border-[#abd9e2] mb-4 p-4"
+    class="mb-4 w-full border border-border/70 bg-background/70 p-4 transition-all duration-200"
   >
     <Collapsible v-model:open="isOpen" @update:open="closeOther">
-      <CollapsibleTrigger class="flex items-center align-middle justify-between w-full">
-        <div class="flex gap-x-4">
-          <component :is="icon" color="white" />
-          <p>{{ service }}</p>
+      <CollapsibleTrigger class="flex w-full items-center justify-between gap-4 text-left">
+        <div class="flex min-w-0 items-center gap-4">
+          <div
+            class="flex h-10 w-10 shrink-0 items-center justify-center border border-border/80 bg-secondary text-foreground"
+          >
+            <component :is="icon" v-if="icon" :size="18" />
+          </div>
+          <div class="min-w-0">
+            <p class="truncate text-base font-semibold">{{ service }}</p>
+            <p class="mt-1 truncate text-xs text-muted-foreground">{{ target }}</p>
+          </div>
         </div>
-        <div class="flex gap-x-3">
-          <div class="flex gap-x-2 items-center align-middle">
-            <p :class="linked ? 'text-green-500' : 'text-gray-500'">
-              {{ linked ? '' : 'Not' }} Linked
+        <div class="flex shrink-0 items-center gap-3">
+          <div class="flex items-center gap-2">
+            <p
+              :class="linked ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'"
+              class="text-sm"
+            >
+              {{ linked ? '已绑定' : '未绑定' }}
             </p>
-            <Link2Off v-if="!linked" color="#718096" />
-            <Link2 v-else color="#48bb78" />
+            <Link2Off v-if="!linked" :size="16" class="text-muted-foreground" />
+            <Link2 v-else :size="16" class="text-green-600 dark:text-green-400" />
           </div>
           <ChevronDown :class="{ 'rotate-180': isOpen }" />
         </div>
       </CollapsibleTrigger>
-      <CollapsibleContent class="flex tablet:flex-col items-center align-middle justify-center" v-if="!linked">
-        <div class="w-full desktop:w-1/2 p-2 tablet:text-center">
-          <p class="text-gray-400 text-sm">
-            Click "Link" to visit {{ service }} and link your {{ service }} to your current account. Please
-            note that as part of linking these accounts, {{ service }} will share some of your data
-            with us.
+      <CollapsibleContent class="flex flex-col gap-4 pt-4" v-if="!linked">
+        <div class="min-w-0 flex-1">
+          <p class="text-sm leading-6 text-muted-foreground">
+            {{ description || `点击下方按钮后，将跳转到 ${service} 完成授权，并绑定到当前账号。` }}
           </p>
         </div>
-        <div class="w-1/2 flex flex-col items-center align-middle justify-center gap-y-2">
+        <div class="flex w-full flex-col items-stretch gap-y-2">
           <Button
-              :disabled="disabled"
-              @click="beginAuthorizationFlow"
+            :disabled="disabled || disableLinkButton"
+            class="w-full border border-border/80"
+            @click="beginAuthorizationFlow"
           >
-            <Link color="black" class="mr-1" />
-            <strong class="text-black" v-if="!disableLinkButton">
-              {{ disabled ? 'Unavailable' : 'Link Account' }}
+            <Link class="mr-1 h-4 w-4" />
+            <strong v-if="!disableLinkButton">
+              {{ disabled ? '暂不可用' : `绑定 ${service}` }}
             </strong>
-            <p v-else class="flex items-center align-middle text-black">
-              <Loader2 class="animate-spin mr-1" color="black" />
-              Waiting...
+            <p v-else class="flex items-center">
+              <Loader2 class="mr-1 h-4 w-4 animate-spin" />
+              等待授权...
             </p>
           </Button>
         </div>
       </CollapsibleContent>
-      <CollapsibleContent v-else class="flex tablet:flex-col items-center align-middle justify-center">
-        <div class="w-full desktop:w-1/2 p-2 tablet:text-center">
-          <p class="text-gray-400 text-sm">
-            Click to immediately remove the connector from your account.
+      <CollapsibleContent v-else class="flex flex-col gap-4 pt-4">
+        <div class="min-w-0 flex-1">
+          <p class="text-sm leading-6 text-muted-foreground">
+            当前账号已绑定
+            {{ service }}。如果解绑，后续将无法再使用该第三方身份快速登录，除非重新授权。
           </p>
         </div>
-        <div class="w-1/2 flex flex-col items-center align-middle justify-center gap-y-2">
-          <Button variant="destructive" @click="removeConnector">
-            Remove {{ isDesktop ? 'Connector' : '' }}
+        <div class="flex w-full flex-col items-stretch gap-y-2">
+          <Button
+            variant="destructive"
+            class="w-full"
+            :disabled="isLoading"
+            @click="removeConnector"
+          >
+            <Loader2 v-if="isLoading" class="mr-1 h-4 w-4 animate-spin" />
+            解绑{{ isDesktop ? service : '' }}
           </Button>
         </div>
       </CollapsibleContent>

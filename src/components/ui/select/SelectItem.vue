@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import {
   SelectItem,
   SelectItemIndicator,
@@ -26,7 +26,6 @@ const delegatedProps = computed(() => {
 
 const forwardedProps = useForwardProps(delegatedProps);
 
-const hover = ref(false)
 </script>
 
 <template>
@@ -34,20 +33,18 @@ const hover = ref(false)
     v-bind="forwardedProps"
     :class="
       cn(
-        'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        'relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         props.class
       )
     "
-    @mouseenter="() => hover = true"
-    @mouseleave="() => hover = false"
   >
     <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectItemIndicator>
-        <Check :color="hover ? 'black' : ''" class="h-4 w-4" />
+        <Check class="h-4 w-4 text-current" />
       </SelectItemIndicator>
     </span>
 
-    <SelectItemText :class="hover ? 'text-black' : ''">
+    <SelectItemText>
       <slot />
     </SelectItemText>
   </SelectItem>

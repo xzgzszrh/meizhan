@@ -7,19 +7,19 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select/index.js'
-import {inject, ref} from 'vue'
-import {Button} from '@/components/ui/button/index.js'
-import {DialogClose} from '@/components/ui/dialog/index.js'
+import { inject, ref } from 'vue'
+import { Button } from '@/components/ui/button/index.js'
+import { DialogClose } from '@/components/ui/dialog/index.js'
 import Label from '../../ui/label/Label.vue'
 import axios from 'redaxios'
-import {toast} from 'vue-sonner'
-import {eventBus} from '@/lib/eventBus.js'
-import {useLogto} from '@logto/vue'
-import MfaVerificationDialog from "@/components/Global/MFAHelpers/MfaVerificationDialog.vue";
-import {BookType, Save, Undo2} from "lucide-vue-next";
-import {createReusableTemplate, useMediaQuery} from '@vueuse/core'
-import PrivacyFooter from "@/components/Global/PrivacyFooter.vue";
-import {API} from "@/lib/apiRouteMap.js";
+import { toast } from 'vue-sonner'
+import { eventBus } from '@/lib/eventBus.js'
+import { useLogto } from '@logto/vue'
+import MfaVerificationDialog from '@/components/Global/MFAHelpers/MfaVerificationDialog.vue'
+import { BookType, Save, Undo2 } from 'lucide-vue-next'
+import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
+import PrivacyFooter from '@/components/Global/PrivacyFooter.vue'
+import { API } from '@/lib/apiRouteMap.js'
 
 const { getAccessToken } = useLogto()
 const selectedLocale = ref('')
@@ -63,38 +63,46 @@ function expandLocale(shortLocale) {
 
 const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
 const isDesktop = useMediaQuery('(min-width: 1023px)')
-
 </script>
 
 <template>
   <UseFooterTemplate>
     <PrivacyFooter v-if="!isDesktop" />
     <DialogClose as-child>
-      <Button type="button" variant="outline" class="desktop:h-[30px] tablet:w-full">
+      <Button type="button" variant="outline" class="h-10 w-full sm:h-[30px]">
         <Undo2 class="w-4 h-4 mr-2" />
         Cancel
       </Button>
     </DialogClose>
     <PrivacyFooter v-if="isDesktop" />
-    <Button type="submit" class="desktop:h-[30px] tablet:w-full" :onclick="updateData" :disabled="!selectedLocale">
+    <Button
+      type="submit"
+      class="h-10 w-full sm:h-[30px]"
+      :onclick="updateData"
+      :disabled="!selectedLocale"
+    >
       <Save class="w-4 h-4 mr-2" />
       Save
     </Button>
   </UseFooterTemplate>
 
-  <MfaVerificationDialog title="Language" :icon="BookType" :desc="userData.profile.locale ? expandLocale(userData.profile.locale) : 'Not Set'" >
+  <MfaVerificationDialog
+    title="Language"
+    :icon="BookType"
+    :desc="userData.profile.locale ? expandLocale(userData.profile.locale) : 'Not Set'"
+  >
     <template #body>
-      <div class="w-full h-full flex flex-col gap-4 pb-4 items-center align-middle">
-        <div class="grid tablet:w-full desktop:w-3/5 max-w-sm items-center gap-1.5 relative">
+      <div class="dialog-form-shell pb-4">
+        <div class="dialog-form-group grid items-center gap-1.5 relative">
           <Label class="font-bold"> Language </Label>
           <Select v-model="selectedLocale">
             <SelectTrigger class="w-full">
               <SelectValue
-                  :placeholder="
-                userData.locale
-                  ? `(Currently) ${userData.locale.toUpperCase()}`
-                  : 'Select a Language'
-              "
+                :placeholder="
+                  userData.locale
+                    ? `(Currently) ${userData.locale.toUpperCase()}`
+                    : 'Select a Language'
+                "
               />
             </SelectTrigger>
             <SelectContent>
@@ -113,5 +121,4 @@ const isDesktop = useMediaQuery('(min-width: 1023px)')
       <FooterTemplate />
     </template>
   </MfaVerificationDialog>
-
 </template>

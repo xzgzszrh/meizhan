@@ -54,7 +54,7 @@ const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
     <Transition name="fade" mode="out-in" duration="100">
       <div v-if="!removeFooter && (emailActive || phoneActive || appActive)" class="tablet:w-full">
         <Button variant="secondary" class="desktop:h-[30px] tablet:w-full" @click="resetDefault">
-          <Undo2 :stroke-wdth="1.5" color="black" class="pr-1" />
+          <Undo2 :stroke-wdth="1.5" class="pr-1 text-current" />
           Go Back
         </Button>
       </div>
@@ -94,21 +94,21 @@ const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
             <div>
               <Label
                   for="email"
-                  class="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-[#030607] hover:text-secondary peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary hover:cursor-pointer"
+                  class="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:cursor-pointer hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                   @mouseenter="() => (emailMouseOver = true)"
                   @mouseleave="() => (emailMouseOver = false)"
                   @click="() => (emailActive = true)"
               >
                 <Mails
                     :size="32"
-                    :color="emailMouseOver? 'rgba(161 85% 86%)': userData.email_verified? 'rgb(34 197 94)': ''"
+                    :color="emailMouseOver ? 'hsl(var(--accent-foreground))' : userData.email_verified ? 'rgb(34 197 94)' : ''"
                     class="m-2"
                 />
-                <div class="flex items-center justify-between" :class="emailMouseOver ? 'text-secondary' : userData.email_verified ? 'text-green-500' : ''">
+                <div class="flex items-center justify-between" :class="emailMouseOver ? 'text-accent-foreground' : userData.email_verified ? 'text-green-500' : ''">
                   <Check
                       v-if="userData.email_verified"
                       :size="16"
-                      :color="emailMouseOver? 'rgba(161 85% 86%)': userData.email_verified? 'rgb(34 197 94)': ''"
+                      :color="emailMouseOver ? 'hsl(var(--accent-foreground))' : userData.email_verified ? 'rgb(34 197 94)' : ''"
                   />
                   Email {{ isDesktop ? 'Address': '' }}
                 </div>
@@ -117,24 +117,24 @@ const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
             <div>
               <Label
                   for="phone"
-                  class="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-[#030607] hover:text-secondary peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary hover:cursor-pointer"
+                  class="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:cursor-pointer hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                   @mouseenter="() => (phoneMouseOver = true)"
                   @mouseleave="() => (phoneMouseOver = false)"
                   @click="() => (phoneActive = true)"
               >
                 <Phone
                     :size="32"
-                    :color="phoneMouseOver? 'rgba(161 85% 86%)': userData.phone_number_verified? 'rgb(34 197 94)': ''"
+                    :color="phoneMouseOver ? 'hsl(var(--accent-foreground))' : userData.phone_number_verified ? 'rgb(34 197 94)' : ''"
                     class="m-2"
                 />
                 <div
                     class="flex items-center justify-between"
-                    :class="phoneMouseOver? 'text-secondary': userData.phone_number_verified? 'text-green-500': ''"
+                    :class="phoneMouseOver ? 'text-accent-foreground' : userData.phone_number_verified ? 'text-green-500' : ''"
                 >
                   <Check
                       v-if="userData.phone_number_verified"
                       :size="16"
-                      :color="phoneMouseOver? 'rgba(161 85% 86%)': userData.phone_number_verified? 'rgb(34 197 94)': ''"
+                      :color="phoneMouseOver ? 'hsl(var(--accent-foreground))' : userData.phone_number_verified ? 'rgb(34 197 94)' : ''"
                   />
                   Phone Number
                 </div>
@@ -145,24 +145,24 @@ const [UseFooterTemplate, FooterTemplate] = createReusableTemplate()
             <div>
               <Label
                   for="app"
-                  class="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-[#030607] hover:text-secondary peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary hover:cursor-pointer"
+                  class="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:cursor-pointer hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                   @mouseenter="() => (appMouseOver = true)"
                   @mouseleave="() => (appMouseOver = false)"
                   @click="() => (appActive = true)"
               >
                 <TabletSmartphone
                     :size="32"
-                    :color="appMouseOver? 'rgba(161 85% 86%)': mfaOptions.totp? 'rgb(34 197 94)': ''"
+                    :color="appMouseOver ? 'hsl(var(--accent-foreground))' : mfaOptions.totp ? 'rgb(34 197 94)' : ''"
                     class="m-2"
                 />
                 <div
                     class="flex items-center justify-between"
-                    :class="appMouseOver? 'text-secondary': mfaOptions.totp? 'text-green-500': ''"
+                    :class="appMouseOver ? 'text-accent-foreground' : mfaOptions.totp ? 'text-green-500' : ''"
                 >
                   <Check
                       v-if="mfaOptions.totp"
                       :size="16"
-                      :color="appMouseOver? 'rgba(161 85% 86%)': mfaOptions.totp? 'rgb(34 197 94)': ''"
+                      :color="appMouseOver ? 'hsl(var(--accent-foreground))' : mfaOptions.totp ? 'rgb(34 197 94)' : ''"
                   />
                   App Authenticator
                 </div>
