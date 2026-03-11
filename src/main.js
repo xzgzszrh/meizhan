@@ -10,6 +10,22 @@ import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
+const parseLogtoResources = (rawValue, coreResource) => {
+  if (!rawValue) {
+    return coreResource ? [coreResource] : []
+  }
+  try {
+    const parsed = JSON.parse(rawValue)
+    if (Array.isArray(parsed)) {
+      return parsed
+    }
+  } catch (e) {
+    console.error('[CONFIG] VITE_LOGTO_RESOURCES is not valid JSON:', e)
+  }
+  return coreResource ? [coreResource] : []
+}
+
+const logtoCoreResource = import.meta.env.VITE_LOGTO_CORE_RESOURCE
 const logtoConfig = {
   endpoint: import.meta.env.VITE_LOGTO_ENDPOINT,
   appId: import.meta.env.VITE_LOGTO_APPID,
@@ -21,7 +37,7 @@ const logtoConfig = {
     UserScope.Organizations,
     UserScope.CustomData
   ],
-  resources: JSON.parse(import.meta.env.VITE_LOGTO_RESOURCES)
+  resources: parseLogtoResources(import.meta.env.VITE_LOGTO_RESOURCES, logtoCoreResource)
 }
 
 app.use(router)
