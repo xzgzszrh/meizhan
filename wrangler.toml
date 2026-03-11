@@ -20,6 +20,7 @@ VITE_SUPPORT_EMAIL = "support@creativone.cn"
 VITE_LEGAL_URL = "https://sh.creativone.cn/legal"
 LOGTO_DOMAIN = "https://auth.sh.creativone.cn"
 LOGTO_DEFAULT_RESOURCE = "https://default.logto.app/api"
+VITE_COMMIT_HASH=71c9298a1ca94a21c37548b06628b203555b5052
 AVATAR_API = ""
 ENABLE_NSFW_CHECK = 0
 
