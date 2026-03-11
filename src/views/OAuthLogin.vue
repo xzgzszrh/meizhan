@@ -4,7 +4,23 @@ import { useLogto } from '@logto/vue'
 
 const { signIn } = useLogto()
 
-onMounted(() => signIn(`${import.meta.env.VITE_ROOT}/oauth/callback`))
+onMounted(async () => {
+  const configuredRoot = import.meta.env.VITE_ROOT
+  const root = (configuredRoot || window.location.origin).replace(/\/$/, '')
+  const redirectUri = `${root}/oauth/callback`
+
+  try {
+    await signIn(redirectUri)
+  } catch (error) {
+    console.error('[AUTH] Failed to start sign-in flow', {
+      error,
+      redirectUri,
+      configuredRoot,
+      endpoint: import.meta.env.VITE_LOGTO_ENDPOINT,
+      appId: import.meta.env.VITE_LOGTO_APPID
+    })
+  }
+})
 </script>
 
 <template>
