@@ -25,10 +25,16 @@ const parseLogtoResources = (rawValue, coreResource) => {
   return coreResource ? [coreResource] : []
 }
 
-const logtoCoreResource = import.meta.env.VITE_LOGTO_CORE_RESOURCE
+const fallbackLogtoEndpoint = 'https://auth.sh.creativone.cn'
+const fallbackLogtoAppId = '6aa8l1189gr6fwhkulr4h'
+const fallbackLogtoCoreResource = 'https://default.logto.app/api'
+
+const logtoEndpoint = import.meta.env.VITE_LOGTO_ENDPOINT || fallbackLogtoEndpoint
+const logtoAppId = import.meta.env.VITE_LOGTO_APPID || fallbackLogtoAppId
+const logtoCoreResource = import.meta.env.VITE_LOGTO_CORE_RESOURCE || fallbackLogtoCoreResource
 const logtoConfig = {
-  endpoint: import.meta.env.VITE_LOGTO_ENDPOINT,
-  appId: import.meta.env.VITE_LOGTO_APPID,
+  endpoint: logtoEndpoint,
+  appId: logtoAppId,
   scopes: [
     UserScope.Profile,
     UserScope.Email,
