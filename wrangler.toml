@@ -4,9 +4,9 @@ compatibility_date = "2024-03-04"
 pages_build_output_dir = "./dist"
 
 kv_namespaces = [
-	{ binding = "MfaStatus", id = "52c4f6065c8846c89ab71cb40419e342" },
-	{ binding = "LogtoAccessToken", id = "ca2385bd7474479cb34d8e661e9c6194" },
-	{ binding = "UsernameChangeTimelimit", id = "102d5b07a70543f193e11f8bd42d8dfd" }
+	{ binding = "MfaStatus", id = "95cfe18dae5a4f7a9b06d3f375d7abd2" },
+	{ binding = "LogtoAccessToken", id = "57362cdd50314838bf526bed3f3c6b2a" },
+	{ binding = "UsernameChangeTimelimit", id = "2a7ac3d8c54c4c4ab45ede96db61cd54" }
 ]
 
 [vars]
@@ -14,7 +14,7 @@ VITE_LOGTO_ENDPOINT = "https://auth.sh.creativone.cn"
 VITE_LOGTO_APPID = "6aa8l1189gr6fwhkulr4h"
 VITE_LOGTO_CORE_RESOURCE = "https://default.logto.app/api"
 VITE_LOGTO_RESOURCES = "[\"https://default.logto.app/api\"]"
-VITE_ROOT = "http://127.0.0.1:8788"
+VITE_ROOT = "https://meizhan.4399876.xyz"
 VITE_LOGTO_ACCOUNT_URL = "https://auth.sh.creativone.cn"
 VITE_SUPPORT_EMAIL = "support@creativone.cn"
 VITE_LEGAL_URL = "https://sh.creativone.cn/legal"
