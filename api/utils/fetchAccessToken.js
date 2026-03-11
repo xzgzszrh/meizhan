@@ -3,6 +3,13 @@
 
 
 export default async function fetchAccessToken(env) {
+	if (!env.LOGTO_APP_ID || !env.LOGTO_APP_SECRET) {
+		throw {
+			message: 'Missing required secret: LOGTO_APP_ID or LOGTO_APP_SECRET',
+			status: 500
+		};
+	}
+
 	const url = `${env.LOGTO_DOMAIN}/oidc/token`;
 	const credentials = btoa(`${env.LOGTO_APP_ID}:${env.LOGTO_APP_SECRET}`);
 	const headers = {

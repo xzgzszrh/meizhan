@@ -45,7 +45,8 @@ const authenticationCheck = async (ctx) => {
         console.log('[MIDDLEWARE] Stage 2 - Bearer Token Check Succeeded')
     } catch (e) {
         console.log('[MIDDLEWARE] Bearer Token Check FAILED')
-        return new Response('ERR_FAILED_TO_VERIFY_TOKEN', { status: e.statusCode });
+        const status = Number(e?.statusCode || e?.status || 401);
+        return new Response('ERR_FAILED_TO_VERIFY_TOKEN', { status: Number.isFinite(status) ? status : 401 });
     }
     return await ctx.next()
 }
