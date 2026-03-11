@@ -25,3 +25,4 @@ ENABLE_NSFW_CHECK = 0
 
 [placement]
 mode = "smart"
+ 

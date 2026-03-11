@@ -29,7 +29,16 @@ const initialiseApiAccessToken = async (ctx) => {
         } catch (err) {
             console.log('Failed to fetch AccessToken', err);
             ctx.data.accesstoken = null;
-            return new Response('INTERNAL_MIDDLEWARE_ERROR', { status: 500 });
+            if (err?.message?.includes('Missing required secret')) {
+                return new Response('INTERNAL_MIDDLEWARE_ERROR:LOGTO_SECRETS_MISSING', { status: 500 });
+            }
+            if (err?.status === 401 || err?.status === 403) {
+                return new Response('INTERNAL_MIDDLEWARE_ERROR:LOGTO_CLIENT_CREDENTIALS_INVALID', { status: 500 });
+            }
+            if (err?.status === 400) {
+                return new Response('INTERNAL_MIDDLEWARE_ERROR:LOGTO_RESOURCE_OR_SCOPE_INVALID', { status: 500 });
+            }
+            return new Response('INTERNAL_MIDDLEWARE_ERROR:ACCESS_TOKEN_FETCH_FAILED', { status: 500 });
         }
     } else {
         ctx.data.accesstoken = accessToken;
