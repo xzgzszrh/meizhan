@@ -28,7 +28,7 @@ const bannerSlides = [
     title: '全网最高性价比的AI账号购买网站',
     description:
       '统一入口、稳定供给、价格透明。适合直接对比不同 AI 账号与订阅类型，快速完成下单。',
-    buttonText: '进入莓站商城',
+    buttonText: '进入AI商城',
     href: 'https://shop.bmoplus.com/#shop',
     icon: Sparkles,
     sideLabel: '综合选购入口',
@@ -87,52 +87,38 @@ onUnmounted(stopBannerAutoplay)
     title="莓站资源"
     :icon="Compass"
     badge="群友资源导航"
-    description="这里聚合群友常用的账号与服务入口。页面已改为二级导航结构，当前先提供 AI 账号与订阅专区。"
+    description="这里聚合群友常用的账号与服务入口，当前先提供 AI 账号与订阅专区。"
   >
     <Tabs v-model="currentTab" class="space-y-4">
-      <section class="section-card overflow-hidden">
-        <div class="border-b border-border/75 p-4 md:p-5">
-          <div class="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <div class="text-xs uppercase tracking-[0.2em] text-muted-foreground">二级导航</div>
-              <h2 class="mt-2 text-lg font-semibold tracking-tight text-foreground">
-                资源分区总览
-              </h2>
-            </div>
-            <span class="material-chip tonal">先上线：AI账号与订阅</span>
-          </div>
-        </div>
-
-        <div class="p-3 md:p-4">
-          <TabsList
-            class="!grid !h-auto w-full !grid-cols-1 !gap-2 !bg-transparent !p-0 md:!grid-cols-2"
+      <section class="section-card overflow-hidden p-3 md:p-4">
+        <TabsList
+          class="!grid !h-auto w-full !grid-cols-1 !gap-2 !bg-transparent !p-0 md:!grid-cols-2"
+        >
+          <TabsTrigger
+            value="ai"
+            class="h-auto items-start justify-between gap-3 rounded-lg border border-border/80 bg-background/80 px-4 py-3 text-left data-[state=active]:border-primary/45 data-[state=active]:bg-primary/[0.08] data-[state=active]:text-foreground data-[state=active]:shadow-none"
           >
-            <TabsTrigger
-              value="ai"
-              class="h-auto items-start justify-between gap-3 rounded-lg border border-border/80 bg-background/80 px-4 py-3 text-left data-[state=active]:border-primary/45 data-[state=active]:bg-primary/[0.08] data-[state=active]:text-foreground data-[state=active]:shadow-none"
-            >
-              <div>
-                <div class="text-base font-semibold">AI账号与订阅</div>
-                <p class="mt-1 text-sm font-normal text-muted-foreground">
-                  GPT Plus、Gemini Ultra、验证卡等常用资源入口
-                </p>
-              </div>
-              <Bot :size="18" class="shrink-0" />
-            </TabsTrigger>
-            <TabsTrigger
-              value="idc"
-              class="h-auto items-start justify-between gap-3 rounded-lg border border-border/80 bg-background/80 px-4 py-3 text-left data-[state=active]:border-primary/45 data-[state=active]:bg-primary/[0.08] data-[state=active]:text-foreground data-[state=active]:shadow-none"
-            >
-              <div>
-                <div class="text-base font-semibold">IDC服务器</div>
-                <p class="mt-1 text-sm font-normal text-muted-foreground">
-                  云服务器、带宽与节点资源将放在这里
-                </p>
-              </div>
-              <Server :size="18" class="shrink-0" />
-            </TabsTrigger>
-          </TabsList>
-        </div>
+            <div>
+              <div class="text-base font-semibold">AI账号与订阅</div>
+              <p class="mt-1 text-sm font-normal text-muted-foreground">
+                GPT Plus、Gemini Ultra、验证卡等常用资源入口
+              </p>
+            </div>
+            <Bot :size="18" class="shrink-0" />
+          </TabsTrigger>
+          <TabsTrigger
+            value="idc"
+            class="h-auto items-start justify-between gap-3 rounded-lg border border-border/80 bg-background/80 px-4 py-3 text-left data-[state=active]:border-primary/45 data-[state=active]:bg-primary/[0.08] data-[state=active]:text-foreground data-[state=active]:shadow-none"
+          >
+            <div>
+              <div class="text-base font-semibold">IDC服务器</div>
+              <p class="mt-1 text-sm font-normal text-muted-foreground">
+                云服务器、带宽与节点资源将放在这里
+              </p>
+            </div>
+            <Server :size="18" class="shrink-0" />
+          </TabsTrigger>
+        </TabsList>
       </section>
 
       <TabsContent value="ai" class="mt-0 space-y-4">
@@ -231,46 +217,50 @@ onUnmounted(stopBannerAutoplay)
             <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.3),transparent_52%)]" />
             <div class="relative">
               <div class="material-chip w-fit">Mastercard验证卡</div>
-              <h3 class="mt-3 text-2xl font-semibold tracking-tight">高通过率验证卡，重点推广位</h3>
+              <h3 class="mt-3 text-2xl font-semibold tracking-tight">高通过率MasterCard验证卡</h3>
               <p class="mt-3 max-w-[62ch] text-sm leading-7 text-muted-foreground">
-                这块使用银行卡视觉做展示强化：仿金属底色、光泽扫光和 HDR
-                高亮。卡号与姓名均为演示内容，仅用于宣传效果。
+                卡号与姓名均为演示内容，仅用于宣传效果。
               </p>
             </div>
 
-            <div class="mastercard-demo relative mt-5">
+            <div class="mastercard-demo relative mx-auto mt-5">
               <div class="card-gloss pointer-events-none" />
               <div class="card-hdr pointer-events-none" />
 
-              <div class="relative z-10 flex items-start justify-between">
-                <div class="text-xs uppercase tracking-[0.2em] text-white/75">Mastercard</div>
-                <ShieldCheck :size="16" class="text-white/80" />
-              </div>
-
-              <div class="relative z-10 mt-8 text-xl font-semibold tracking-[0.22em] text-white">
-                5376 84•• •••• 7391
-              </div>
-
-              <div class="relative z-10 mt-6 flex items-end justify-between gap-4">
-                <div>
-                  <div class="text-[10px] uppercase tracking-[0.2em] text-white/70">Card Holder</div>
-                  <div class="mt-1 text-sm font-medium text-white">MEI ZHAN MEMBER</div>
+              <div class="relative z-10 flex h-full flex-col justify-between">
+                <div class="flex items-start justify-between">
+                  <div class="text-xs uppercase tracking-[0.2em] text-white/75">Mastercard</div>
+                  <ShieldCheck :size="16" class="text-white/80" />
                 </div>
-                <div>
-                  <div class="text-[10px] uppercase tracking-[0.2em] text-white/70">Valid Thru</div>
-                  <div class="mt-1 text-sm font-medium text-white">10/31</div>
+
+                <div class="space-y-3">
+                  <div class="h-8 w-12 rounded-md border border-white/35 bg-white/20 backdrop-blur-sm" />
+                  <div class="text-[clamp(1rem,2.2vw,1.4rem)] font-semibold tracking-[0.22em] text-white">
+                    5376 84•• •••• 7391
+                  </div>
                 </div>
-                <div class="flex items-center -space-x-3">
-                  <span class="h-9 w-9 rounded-full bg-[#ff8f3f]/90 blur-[0.1px]" />
-                  <span class="h-9 w-9 rounded-full bg-[#ffd36b]/90 mix-blend-screen" />
+
+                <div class="flex items-end justify-between gap-4">
+                  <div>
+                    <div class="text-[10px] uppercase tracking-[0.2em] text-white/70">Card Holder</div>
+                    <div class="mt-1 text-sm font-medium text-white">MEI ZHAN MEMBER</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] uppercase tracking-[0.2em] text-white/70">Valid Thru</div>
+                    <div class="mt-1 text-sm font-medium text-white">10/31</div>
+                  </div>
+                  <div class="flex items-center -space-x-3">
+                    <span class="h-9 w-9 rounded-full bg-[#ff8f3f]/90 blur-[0.1px]" />
+                    <span class="h-9 w-9 rounded-full bg-[#ffd36b]/90 mix-blend-screen" />
+                  </div>
                 </div>
               </div>
             </div>
 
             <div class="mt-4 flex flex-wrap gap-2">
-              <span class="material-chip">演示卡号</span>
-              <span class="material-chip">光泽/HDR</span>
-              <span class="material-chip">品牌化展示</span>
+              <span class="material-chip">自助下单</span>
+              <span class="material-chip">高通过率</span>
+              <span class="material-chip">自动发卡</span>
             </div>
 
             <Button as-child class="mt-5 h-10 rounded-lg px-4">
@@ -393,6 +383,9 @@ onUnmounted(stopBannerAutoplay)
 }
 
 .mastercard-demo {
+  width: min(100%, 620px);
+  aspect-ratio: 1.586;
+  min-height: 220px;
   border-radius: calc(var(--radius-surface) + 6px);
   border: 1px solid rgba(255, 255, 255, 0.24);
   padding: 22px;
