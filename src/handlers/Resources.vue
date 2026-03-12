@@ -424,7 +424,7 @@ onUnmounted(() => {
             <div class="material-chip tonal mx-auto w-fit">坤云IDC</div>
             <h3 class="text-2xl font-semibold tracking-tight md:text-3xl">坤云IDC 服务器推广页</h3>
             <p class="mx-auto max-w-[72ch] text-sm leading-7 text-muted-foreground">
-              桌面端采用立体服务器交互演示，移动端改为信息优先的卡片结构，确保不同设备都能快速理解产品卖点。
+              聚焦云服务器、性能云与高防 SCDN 核心方案，点击任意推广卡可直达官网。
             </p>
           </div>
 
@@ -438,26 +438,16 @@ onUnmounted(() => {
               <div class="idc-scene-brand">坤云IDC</div>
 
               <div class="idc-server-3d" aria-hidden="true">
-                <div class="idc-stack idc-stack-1">
-                  <div class="idc-front">
-                    <span v-for="slot in 5" :key="`a-${slot}`" class="idc-slot" />
+                <div v-for="rack in 3" :key="`rack-${rack}`" class="idc-rack" :class="`idc-rack-${rack}`">
+                  <div class="idc-face idc-face-front">
+                    <span v-for="slot in 6" :key="`rack-${rack}-slot-${slot}`" class="idc-slot" />
+                    <span class="idc-led-strip" />
                   </div>
-                  <div class="idc-side" />
-                  <div class="idc-top-face" />
-                </div>
-                <div class="idc-stack idc-stack-2">
-                  <div class="idc-front">
-                    <span v-for="slot in 5" :key="`b-${slot}`" class="idc-slot" />
-                  </div>
-                  <div class="idc-side" />
-                  <div class="idc-top-face" />
-                </div>
-                <div class="idc-stack idc-stack-3">
-                  <div class="idc-front">
-                    <span v-for="slot in 5" :key="`c-${slot}`" class="idc-slot" />
-                  </div>
-                  <div class="idc-side" />
-                  <div class="idc-top-face" />
+                  <div class="idc-face idc-face-back" />
+                  <div class="idc-face idc-face-left" />
+                  <div class="idc-face idc-face-right" />
+                  <div class="idc-face idc-face-top" />
+                  <div class="idc-face idc-face-bottom" />
                 </div>
                 <div class="idc-base-shadow" />
               </div>
@@ -495,9 +485,6 @@ onUnmounted(() => {
                   <Gauge :size="16" class="text-primary" />
                   坤云IDC 核心节点
                 </div>
-                <p class="mt-2 text-sm leading-6 text-muted-foreground">
-                  移动端以信息可读性优先，保留推广内容并简化 3D 动效，确保浏览稳定。
-                </p>
               </div>
             </div>
 
@@ -698,11 +685,14 @@ onUnmounted(() => {
 }
 
 .idc-server-3d {
+  --rack-width: 236px;
+  --rack-height: 102px;
+  --rack-depth: 62px;
   position: absolute;
   left: 50%;
   top: 52%;
-  width: 230px;
-  height: 392px;
+  width: 300px;
+  height: 430px;
   transform-style: preserve-3d;
   transform: translate3d(calc(-50% + var(--idc-tx)), calc(-50% + var(--idc-ty)), 0)
     rotateX(var(--idc-rx)) rotateY(var(--idc-ry));
@@ -710,45 +700,102 @@ onUnmounted(() => {
   z-index: 15;
 }
 
-.idc-stack {
+.idc-server-3d::before {
+  content: '';
   position: absolute;
-  left: 0;
-  width: 100%;
-  height: 102px;
+  left: 50%;
+  top: 8%;
+  width: 212px;
+  height: 348px;
+  transform: translateX(-50%) translateZ(-18px);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(82, 52, 110, 0.12));
+  filter: blur(1px);
+}
+
+.idc-rack {
+  position: absolute;
+  left: 50%;
+  width: var(--rack-width);
+  height: var(--rack-height);
   transform-style: preserve-3d;
+  transform: translateX(-50%);
 }
 
-.idc-stack-1 {
-  top: 10px;
+.idc-rack-1 {
+  top: 14px;
 }
 
-.idc-stack-2 {
-  top: 132px;
+.idc-rack-2 {
+  top: 152px;
 }
 
-.idc-stack-3 {
-  top: 254px;
+.idc-rack-3 {
+  top: 290px;
 }
 
-.idc-front,
-.idc-side,
-.idc-top-face {
+.idc-face {
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: linear-gradient(160deg, rgba(36, 22, 54, 0.95), rgba(18, 12, 30, 0.95));
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backface-visibility: hidden;
 }
 
-.idc-front {
-  inset: 0;
-  transform: translateZ(16px);
+.idc-face-front {
+  width: var(--rack-width);
+  height: var(--rack-height);
+  transform: translate(-50%, -50%) translateZ(calc(var(--rack-depth) / 2));
   border-radius: 14px;
   display: grid;
   align-content: center;
-  gap: 7px;
-  padding: 12px;
+  gap: 6px;
+  padding: 12px 12px 10px;
+  background: linear-gradient(160deg, rgba(35, 20, 58, 0.96), rgba(16, 10, 28, 0.98));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 16px 34px -18px rgba(13, 8, 20, 0.8);
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 18px 40px -22px rgba(10, 6, 18, 0.82);
+}
+
+.idc-face-back {
+  width: var(--rack-width);
+  height: var(--rack-height);
+  transform: translate(-50%, -50%) rotateY(180deg) translateZ(calc(var(--rack-depth) / 2));
+  border-radius: 14px;
+  background: linear-gradient(140deg, rgba(14, 9, 24, 0.96), rgba(30, 18, 46, 0.9));
+}
+
+.idc-face-left,
+.idc-face-right {
+  width: var(--rack-depth);
+  height: var(--rack-height);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(107, 77, 142, 0.44), rgba(23, 14, 37, 0.95));
+}
+
+.idc-face-left {
+  transform: translate(-50%, -50%) rotateY(-90deg) translateZ(calc(var(--rack-width) / 2));
+}
+
+.idc-face-right {
+  transform: translate(-50%, -50%) rotateY(90deg) translateZ(calc(var(--rack-width) / 2));
+}
+
+.idc-face-top,
+.idc-face-bottom {
+  width: var(--rack-width);
+  height: var(--rack-depth);
+  border-radius: 10px;
+}
+
+.idc-face-top {
+  transform: translate(-50%, -50%) rotateX(90deg) translateZ(calc(var(--rack-height) / 2));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(101, 72, 134, 0.22));
+}
+
+.idc-face-bottom {
+  transform: translate(-50%, -50%) rotateX(-90deg) translateZ(calc(var(--rack-height) / 2));
+  background: linear-gradient(180deg, rgba(14, 9, 21, 0.85), rgba(37, 22, 55, 0.88));
 }
 
 .idc-slot {
@@ -764,36 +811,29 @@ onUnmounted(() => {
   );
 }
 
-.idc-side {
-  top: 0;
-  right: -22px;
-  width: 22px;
-  height: 100%;
-  border-radius: 0 12px 12px 0;
-  transform: rotateY(90deg) translateZ(219px);
-  background: linear-gradient(160deg, rgba(14, 10, 20, 0.88), rgba(42, 28, 65, 0.94));
-}
-
-.idc-top-face {
-  left: 0;
-  top: -14px;
-  width: 100%;
-  height: 14px;
-  transform: rotateX(90deg) translateZ(16px);
-  border-radius: 12px 12px 0 0;
-  background: linear-gradient(180deg, rgba(253, 253, 255, 0.34), rgba(253, 253, 255, 0.06));
+.idc-led-strip {
+  display: block;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(227, 174, 255, 0.95) 0%,
+    rgba(153, 237, 255, 0.78) 40%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  box-shadow: 0 0 18px rgba(165, 247, 255, 0.28);
 }
 
 .idc-base-shadow {
   position: absolute;
   left: 50%;
-  bottom: -26px;
-  width: 290px;
-  height: 66px;
+  bottom: -34px;
+  width: 330px;
+  height: 86px;
   transform: translateX(-50%);
   border-radius: 999px;
   background: radial-gradient(circle, rgba(16, 11, 27, 0.72), rgba(16, 11, 27, 0));
-  filter: blur(7px);
+  filter: blur(10px);
 }
 
 .idc-callout {
