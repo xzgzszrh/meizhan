@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   BadgeCheck,
   Cable,
+  Compass,
   CircleUserRound,
   Code,
   Cog,
@@ -28,6 +29,12 @@ const sidebarNavItems = ref([
     desc: '姓名、生日、地区与语言',
     icon: CircleUserRound,
     href: '/account/aboutme'
+  },
+  {
+    title: '莓站资源',
+    desc: '群友资源入口与订阅推荐',
+    icon: Compass,
+    href: '/account/resources'
   },
   {
     title: '登录与安全',

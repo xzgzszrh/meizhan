@@ -9,7 +9,16 @@ import AvatarEditor from '@/components/Base/Avatar/AvatarEditor.vue'
 import PageSection from '@/components/Base/PageSection.vue'
 import { Button } from '@/components/ui/button/index.js'
 import { toast } from 'vue-sonner'
-import { CalendarFold, CircleUserRound, Copy, Globe, Languages, ShieldCheck } from 'lucide-vue-next'
+import {
+  CalendarFold,
+  CircleUserRound,
+  Copy,
+  Globe,
+  Languages,
+  ShieldCheck,
+  Sparkles,
+  SquareArrowOutUpRight
+} from 'lucide-vue-next'
 
 const userData = inject('userData')
 
@@ -169,6 +178,27 @@ const copyAccountId = async () => {
                   </Button>
                 </div>
               </div>
+
+              <div class="border border-border/70 bg-secondary/35 p-3">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <div class="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                      群友专区
+                    </div>
+                    <div class="mt-2 text-sm leading-6 text-foreground">
+                      进入莓站资源页，查看 AI 账号与会员订阅推荐。
+                    </div>
+                  </div>
+                  <Sparkles :size="16" class="mt-0.5 text-primary" />
+                </div>
+                <Button as-child class="mt-3 h-9 w-full justify-between rounded-lg">
+                  <router-link to="/account/resources">
+                    查看群友资源
+                    <SquareArrowOutUpRight :size="15" />
+                  </router-link>
+                </Button>
+              </div>
+
               <p class="text-sm leading-6 text-muted-foreground">
                 用户名、姓名、生日与地区信息已经按功能重新聚合；你可以按信息类型在下方逐项维护。
               </p>

@@ -36,6 +36,11 @@ const router = createRouter({
           component: () => import('@/handlers/PersonalInfo.vue')
         },
         {
+          path: 'resources',
+          name: 'Meizhan Resources',
+          component: () => import('@/handlers/Resources.vue')
+        },
+        {
           path: 'security',
           name: 'Sign-In & Security',
           component: () => import('@/handlers/SignIn&Security.vue')
