@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import PageSection from '@/components/Base/PageSection.vue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs/index.js'
 import { Button } from '@/components/ui/button/index.js'
@@ -8,11 +9,14 @@ import {
   Bot,
   ChevronLeft,
   ChevronRight,
+  CloudCog,
   CircleDollarSign,
   Compass,
   ExternalLink,
+  Gauge,
+  HardDrive,
   Layers,
-  ScanLine,
+  Network,
   Server,
   ShieldCheck,
   Sparkles
@@ -48,6 +52,73 @@ const bannerSlides = [
   }
 ]
 
+const idcPromotions = [
+  {
+    title: '5元即可拥有属于你的小龙虾-openclaw安全高可用解决方案',
+    summary: '入门成本低，轻量业务也能快速拥有稳定可用能力。',
+    icon: ShieldCheck
+  },
+  {
+    title: '宁波精品云服务器 最佳单线跨网解决方案，三网互通异地异网优化',
+    summary: '适合跨地区访问场景，强调单线跨网稳定与互通质量。',
+    icon: Network
+  },
+  {
+    title: '内蒙性能云 三网优化电信线路，超大数据盘',
+    summary: '偏重性能与容量，适用于需要大盘与高吞吐的任务。',
+    icon: HardDrive
+  },
+  {
+    title: '高防SCDN 多节点负载均衡，集群防御高达2TB',
+    summary: '多节点联防与流量分散，面向高峰流量与攻击防护场景。',
+    icon: CloudCog
+  }
+]
+const idcTargetUrl = 'https://ikunyun.cn'
+
+const isDesktop3D = useMediaQuery('(min-width: 1024px)')
+const defaultSceneState = {
+  rotateX: -12,
+  rotateY: 17,
+  translateX: 0,
+  translateY: 0,
+  glowX: 52,
+  glowY: 28
+}
+const idcSceneState = ref({ ...defaultSceneState })
+
+const idcSceneStyle = computed(() => ({
+  '--idc-rx': `${idcSceneState.value.rotateX}deg`,
+  '--idc-ry': `${idcSceneState.value.rotateY}deg`,
+  '--idc-tx': `${idcSceneState.value.translateX}px`,
+  '--idc-ty': `${idcSceneState.value.translateY}px`,
+  '--idc-glow-x': `${idcSceneState.value.glowX}%`,
+  '--idc-glow-y': `${idcSceneState.value.glowY}%`
+}))
+
+const resetIdcScene = () => {
+  idcSceneState.value = { ...defaultSceneState }
+}
+
+const handleIdcSceneMove = (event) => {
+  if (!isDesktop3D.value) return
+  const target = event.currentTarget
+  if (!(target instanceof HTMLElement)) return
+
+  const rect = target.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width - 0.5
+  const y = (event.clientY - rect.top) / rect.height - 0.5
+
+  idcSceneState.value = {
+    rotateX: -12 - y * 18,
+    rotateY: 17 + x * 22,
+    translateX: x * 11,
+    translateY: y * 9,
+    glowX: 50 + x * 20,
+    glowY: 32 + y * 16
+  }
+}
+
 const totalSlides = computed(() => bannerSlides.length)
 
 let slideTimer = null
@@ -79,7 +150,10 @@ const nextSlide = () => {
 }
 
 onMounted(startBannerAutoplay)
-onUnmounted(stopBannerAutoplay)
+onUnmounted(() => {
+  stopBannerAutoplay()
+  resetIdcScene()
+})
 </script>
 
 <template>
@@ -345,26 +419,120 @@ onUnmounted(stopBannerAutoplay)
       </TabsContent>
 
       <TabsContent value="idc" class="mt-0">
-        <section class="section-card overflow-hidden p-5 md:p-7">
-          <div class="grid gap-5 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] md:items-center">
-            <div>
-              <div class="material-chip w-fit">IDC服务器</div>
-              <h3 class="mt-3 text-2xl font-semibold tracking-tight">IDC 资源页正在准备中</h3>
-              <p class="mt-3 text-sm leading-7 text-muted-foreground">
-                二级导航结构已经预留完成。接下来可以直接在这个分区补充云服务器、机房节点、带宽套餐等内容。
-              </p>
-            </div>
+        <section class="section-card overflow-hidden p-4 md:p-6">
+          <div class="space-y-2 text-center">
+            <div class="material-chip tonal mx-auto w-fit">坤云IDC</div>
+            <h3 class="text-2xl font-semibold tracking-tight md:text-3xl">坤云IDC 服务器推广页</h3>
+            <p class="mx-auto max-w-[72ch] text-sm leading-7 text-muted-foreground">
+              桌面端采用立体服务器交互演示，移动端改为信息优先的卡片结构，确保不同设备都能快速理解产品卖点。
+            </p>
+          </div>
+
+          <div class="idc-scene-shell mt-6 hidden lg:block">
             <div
-              class="relative overflow-hidden rounded-[var(--radius-surface)] border border-dashed border-border bg-background/65 p-5"
+              class="idc-scene"
+              :style="idcSceneStyle"
+              @mousemove="handleIdcSceneMove"
+              @mouseleave="resetIdcScene"
             >
-              <div class="flex items-center gap-3">
-                <ScanLine :size="18" class="text-primary" />
-                <div class="text-sm font-semibold">即将开放 IDC 专区</div>
+              <div class="idc-scene-brand">坤云IDC</div>
+
+              <div class="idc-server-3d" aria-hidden="true">
+                <div class="idc-stack idc-stack-1">
+                  <div class="idc-front">
+                    <span v-for="slot in 5" :key="`a-${slot}`" class="idc-slot" />
+                  </div>
+                  <div class="idc-side" />
+                  <div class="idc-top-face" />
+                </div>
+                <div class="idc-stack idc-stack-2">
+                  <div class="idc-front">
+                    <span v-for="slot in 5" :key="`b-${slot}`" class="idc-slot" />
+                  </div>
+                  <div class="idc-side" />
+                  <div class="idc-top-face" />
+                </div>
+                <div class="idc-stack idc-stack-3">
+                  <div class="idc-front">
+                    <span v-for="slot in 5" :key="`c-${slot}`" class="idc-slot" />
+                  </div>
+                  <div class="idc-side" />
+                  <div class="idc-top-face" />
+                </div>
+                <div class="idc-base-shadow" />
               </div>
-              <p class="mt-3 text-sm leading-7 text-muted-foreground">
-                当前已完成导航位和容器结构，后续只需要补充商品内容即可上线。
-              </p>
+
+              <a
+                v-for="(item, index) in idcPromotions"
+                :key="item.title"
+                :href="idcTargetUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="idc-callout"
+                :class="`idc-callout-${index + 1}`"
+              >
+                <div class="idc-callout-index">0{{ index + 1 }}</div>
+                <div class="mt-2 flex items-start gap-2">
+                  <component :is="item.icon" :size="16" class="mt-0.5 shrink-0 text-primary" />
+                  <p class="text-sm font-semibold leading-6 text-foreground">
+                    {{ item.title }}
+                  </p>
+                </div>
+                <p class="mt-2 text-xs leading-6 text-muted-foreground">{{ item.summary }}</p>
+              </a>
             </div>
+          </div>
+
+          <div class="mt-6 space-y-3 lg:hidden">
+            <div
+              class="relative overflow-hidden rounded-[var(--radius-surface)] border border-border/80 bg-gradient-to-br from-background to-secondary/35 p-4"
+            >
+              <div
+                class="pointer-events-none absolute right-[-28px] top-[-46px] h-40 w-40 rounded-full bg-primary/15 blur-3xl"
+              />
+              <div class="relative">
+                <div class="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <Gauge :size="16" class="text-primary" />
+                  坤云IDC 核心节点
+                </div>
+                <p class="mt-2 text-sm leading-6 text-muted-foreground">
+                  移动端以信息可读性优先，保留推广内容并简化 3D 动效，确保浏览稳定。
+                </p>
+              </div>
+            </div>
+
+            <a
+              v-for="(item, index) in idcPromotions"
+              :key="`${item.title}-mobile`"
+              :href="idcTargetUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="rounded-[var(--radius-surface)] border border-border/80 bg-background/80 p-4"
+            >
+              <div class="flex items-start gap-3">
+                <div
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/80 bg-secondary/65"
+                >
+                  <component :is="item.icon" :size="16" class="text-primary" />
+                </div>
+                <div>
+                  <div class="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    方案 0{{ index + 1 }}
+                  </div>
+                  <p class="mt-1 text-sm font-semibold leading-6 text-foreground">{{ item.title }}</p>
+                  <p class="mt-1 text-xs leading-6 text-muted-foreground">{{ item.summary }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="mt-5 flex justify-center">
+            <Button as-child class="h-10 rounded-lg px-5">
+              <a :href="idcTargetUrl" target="_blank" rel="noopener noreferrer">
+                访问坤云IDC官网
+                <ExternalLink :size="15" class="ml-2" />
+              </a>
+            </Button>
           </div>
         </section>
       </TabsContent>
@@ -451,6 +619,274 @@ onUnmounted(stopBannerAutoplay)
 
 .gemini-card:hover .gemini-orbit {
   opacity: 0.95;
+}
+
+.idc-scene-shell {
+  perspective: 1500px;
+}
+
+.idc-scene {
+  --idc-rx: -12deg;
+  --idc-ry: 17deg;
+  --idc-tx: 0px;
+  --idc-ty: 0px;
+  --idc-glow-x: 52%;
+  --idc-glow-y: 28%;
+  position: relative;
+  min-height: 700px;
+  overflow: hidden;
+  border-radius: calc(var(--radius-surface) + 2px);
+  border: 1px solid hsl(var(--border) / 0.8);
+  background:
+    linear-gradient(160deg, hsl(var(--background)) 0%, hsl(var(--secondary) / 0.46) 100%);
+}
+
+.idc-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--idc-glow-x) var(--idc-glow-y),
+    hsl(var(--primary) / 0.22),
+    transparent 45%
+  );
+  pointer-events: none;
+}
+
+.idc-scene::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 280px;
+  background:
+    linear-gradient(to top, hsl(var(--background) / 0.9), transparent),
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent 34px,
+      hsl(var(--border) / 0.35) 34px,
+      hsl(var(--border) / 0.35) 35px
+    ),
+    repeating-linear-gradient(
+      to top,
+      transparent 0,
+      transparent 34px,
+      hsl(var(--border) / 0.35) 34px,
+      hsl(var(--border) / 0.35) 35px
+    );
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.idc-scene-brand {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--border) / 0.8);
+  background: hsl(var(--card) / 0.9);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground));
+  z-index: 20;
+}
+
+.idc-server-3d {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 230px;
+  height: 392px;
+  transform-style: preserve-3d;
+  transform: translate3d(calc(-50% + var(--idc-tx)), calc(-50% + var(--idc-ty)), 0)
+    rotateX(var(--idc-rx)) rotateY(var(--idc-ry));
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 15;
+}
+
+.idc-stack {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 102px;
+  transform-style: preserve-3d;
+}
+
+.idc-stack-1 {
+  top: 10px;
+}
+
+.idc-stack-2 {
+  top: 132px;
+}
+
+.idc-stack-3 {
+  top: 254px;
+}
+
+.idc-front,
+.idc-side,
+.idc-top-face {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(160deg, rgba(36, 22, 54, 0.95), rgba(18, 12, 30, 0.95));
+}
+
+.idc-front {
+  inset: 0;
+  transform: translateZ(16px);
+  border-radius: 14px;
+  display: grid;
+  align-content: center;
+  gap: 7px;
+  padding: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 16px 34px -18px rgba(13, 8, 20, 0.8);
+}
+
+.idc-slot {
+  display: block;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(170, 206, 246, 0.82) 0%,
+    rgba(170, 206, 246, 0.35) 26%,
+    rgba(255, 255, 255, 0.11) 100%
+  );
+}
+
+.idc-side {
+  top: 0;
+  right: -22px;
+  width: 22px;
+  height: 100%;
+  border-radius: 0 12px 12px 0;
+  transform: rotateY(90deg) translateZ(219px);
+  background: linear-gradient(160deg, rgba(14, 10, 20, 0.88), rgba(42, 28, 65, 0.94));
+}
+
+.idc-top-face {
+  left: 0;
+  top: -14px;
+  width: 100%;
+  height: 14px;
+  transform: rotateX(90deg) translateZ(16px);
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(180deg, rgba(253, 253, 255, 0.34), rgba(253, 253, 255, 0.06));
+}
+
+.idc-base-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -26px;
+  width: 290px;
+  height: 66px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(16, 11, 27, 0.72), rgba(16, 11, 27, 0));
+  filter: blur(7px);
+}
+
+.idc-callout {
+  --shift-x: 0;
+  --shift-y: 0;
+  position: absolute;
+  width: 320px;
+  border-radius: 16px;
+  border: 1px solid hsl(var(--border) / 0.86);
+  background: hsl(var(--card) / 0.92);
+  padding: 14px 15px;
+  box-shadow: 0 20px 38px -26px rgba(24, 14, 34, 0.78);
+  backdrop-filter: blur(4px);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate3d(
+    calc(var(--idc-tx) * var(--shift-x)),
+    calc(var(--idc-ty) * var(--shift-y)),
+    0
+  );
+  z-index: 18;
+}
+
+.idc-callout::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.46), hsl(var(--border) / 0.18));
+}
+
+.idc-callout-index {
+  display: inline-flex;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--border) / 0.8);
+  background: hsl(var(--secondary) / 0.8);
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: hsl(var(--primary));
+}
+
+.idc-callout-1 {
+  left: 38px;
+  top: 106px;
+  --shift-x: 0.36;
+  --shift-y: 0.24;
+}
+
+.idc-callout-1::before {
+  right: -56px;
+}
+
+.idc-callout-2 {
+  right: 38px;
+  top: 166px;
+  --shift-x: -0.38;
+  --shift-y: 0.16;
+}
+
+.idc-callout-2::before {
+  left: -56px;
+  transform: rotate(3deg);
+}
+
+.idc-callout-3 {
+  left: 42px;
+  top: 352px;
+  --shift-x: 0.3;
+  --shift-y: -0.22;
+}
+
+.idc-callout-3::before {
+  right: -56px;
+  transform: rotate(-4deg);
+}
+
+.idc-callout-4 {
+  right: 38px;
+  top: 430px;
+  --shift-x: -0.28;
+  --shift-y: -0.28;
+}
+
+.idc-callout-4::before {
+  left: -56px;
+}
+
+@media (max-width: 1320px) {
+  .idc-callout {
+    width: 280px;
+  }
 }
 
 @keyframes card-sweep {
