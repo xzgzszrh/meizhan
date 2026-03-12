@@ -438,6 +438,14 @@ onUnmounted(() => {
               <div class="idc-scene-brand">坤云IDC</div>
 
               <div class="idc-server-3d" aria-hidden="true">
+                <div class="idc-cabinet">
+                  <div class="idc-cabinet-face idc-cabinet-front" />
+                  <div class="idc-cabinet-face idc-cabinet-back" />
+                  <div class="idc-cabinet-face idc-cabinet-left" />
+                  <div class="idc-cabinet-face idc-cabinet-right" />
+                  <div class="idc-cabinet-face idc-cabinet-top" />
+                  <div class="idc-cabinet-face idc-cabinet-bottom" />
+                </div>
                 <div v-for="rack in 3" :key="`rack-${rack}`" class="idc-rack" :class="`idc-rack-${rack}`">
                   <div class="idc-face idc-face-front">
                     <span v-for="slot in 6" :key="`rack-${rack}-slot-${slot}`" class="idc-slot" />
@@ -685,14 +693,17 @@ onUnmounted(() => {
 }
 
 .idc-server-3d {
-  --rack-width: 236px;
-  --rack-height: 102px;
-  --rack-depth: 62px;
+  --cab-width: 268px;
+  --cab-height: 394px;
+  --cab-depth: 132px;
+  --rack-width: 228px;
+  --rack-height: 96px;
+  --rack-depth: 56px;
   position: absolute;
   left: 50%;
   top: 52%;
-  width: 300px;
-  height: 430px;
+  width: 332px;
+  height: 446px;
   transform-style: preserve-3d;
   transform: translate3d(calc(-50% + var(--idc-tx)), calc(-50% + var(--idc-ty)), 0)
     rotateX(var(--idc-rx)) rotateY(var(--idc-ry));
@@ -704,13 +715,99 @@ onUnmounted(() => {
   content: '';
   position: absolute;
   left: 50%;
-  top: 8%;
-  width: 212px;
-  height: 348px;
-  transform: translateX(-50%) translateZ(-18px);
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(82, 52, 110, 0.12));
-  filter: blur(1px);
+  top: 6%;
+  width: 250px;
+  height: 370px;
+  transform: translateX(-50%) translateZ(calc(var(--cab-depth) * -0.48));
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(68, 46, 98, 0.12));
+  filter: blur(2px);
+}
+
+.idc-cabinet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--cab-width);
+  height: var(--cab-height);
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%);
+}
+
+.idc-cabinet-face {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backface-visibility: hidden;
+}
+
+.idc-cabinet-front {
+  width: var(--cab-width);
+  height: var(--cab-height);
+  transform: translate(-50%, -50%) translateZ(calc(var(--cab-depth) / 2));
+  border-radius: 18px;
+  background: linear-gradient(165deg, rgba(29, 18, 49, 0.92), rgba(14, 10, 26, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 26px 48px -34px rgba(8, 5, 16, 0.94);
+}
+
+.idc-cabinet-front::before {
+  content: '';
+  position: absolute;
+  inset: 16px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 5, 14, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.idc-cabinet-back {
+  width: var(--cab-width);
+  height: var(--cab-height);
+  transform: translate(-50%, -50%) rotateY(180deg) translateZ(calc(var(--cab-depth) / 2));
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(160, 145, 189, 0.2) 0 2px,
+      rgba(16, 10, 26, 0.92) 2px 12px
+    ),
+    linear-gradient(160deg, rgba(23, 15, 37, 0.95), rgba(10, 7, 19, 0.98));
+}
+
+.idc-cabinet-left,
+.idc-cabinet-right {
+  width: var(--cab-depth);
+  height: var(--cab-height);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(118, 89, 154, 0.38), rgba(20, 12, 34, 0.96));
+}
+
+.idc-cabinet-left {
+  transform: translate(-50%, -50%) rotateY(-90deg) translateZ(calc(var(--cab-width) / 2));
+}
+
+.idc-cabinet-right {
+  transform: translate(-50%, -50%) rotateY(90deg) translateZ(calc(var(--cab-width) / 2));
+}
+
+.idc-cabinet-top,
+.idc-cabinet-bottom {
+  width: var(--cab-width);
+  height: var(--cab-depth);
+  border-radius: 14px;
+}
+
+.idc-cabinet-top {
+  transform: translate(-50%, -50%) rotateX(90deg) translateZ(calc(var(--cab-height) / 2));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(107, 76, 141, 0.24));
+}
+
+.idc-cabinet-bottom {
+  transform: translate(-50%, -50%) rotateX(-90deg) translateZ(calc(var(--cab-height) / 2));
+  background: linear-gradient(180deg, rgba(13, 8, 22, 0.84), rgba(28, 18, 46, 0.9));
 }
 
 .idc-rack {
@@ -719,19 +816,19 @@ onUnmounted(() => {
   width: var(--rack-width);
   height: var(--rack-height);
   transform-style: preserve-3d;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(28px);
 }
 
 .idc-rack-1 {
-  top: 14px;
+  top: 34px;
 }
 
 .idc-rack-2 {
-  top: 152px;
+  top: 168px;
 }
 
 .idc-rack-3 {
-  top: 290px;
+  top: 302px;
 }
 
 .idc-face {
@@ -746,7 +843,7 @@ onUnmounted(() => {
   width: var(--rack-width);
   height: var(--rack-height);
   transform: translate(-50%, -50%) translateZ(calc(var(--rack-depth) / 2));
-  border-radius: 14px;
+  border-radius: 12px;
   display: grid;
   align-content: center;
   gap: 6px;
@@ -761,7 +858,7 @@ onUnmounted(() => {
   width: var(--rack-width);
   height: var(--rack-height);
   transform: translate(-50%, -50%) rotateY(180deg) translateZ(calc(var(--rack-depth) / 2));
-  border-radius: 14px;
+  border-radius: 12px;
   background: linear-gradient(140deg, rgba(14, 9, 24, 0.96), rgba(30, 18, 46, 0.9));
 }
 
@@ -827,9 +924,9 @@ onUnmounted(() => {
 .idc-base-shadow {
   position: absolute;
   left: 50%;
-  bottom: -34px;
-  width: 330px;
-  height: 86px;
+  bottom: -38px;
+  width: 360px;
+  height: 96px;
   transform: translateX(-50%);
   border-radius: 999px;
   background: radial-gradient(circle, rgba(16, 11, 27, 0.72), rgba(16, 11, 27, 0));
