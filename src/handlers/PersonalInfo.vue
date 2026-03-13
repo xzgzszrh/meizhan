@@ -10,6 +10,7 @@ import PageSection from '@/components/Base/PageSection.vue'
 import { Button } from '@/components/ui/button/index.js'
 import { toast } from 'vue-sonner'
 import {
+  BadgeCheck,
   CalendarFold,
   CircleUserRound,
   Copy,
@@ -55,6 +56,43 @@ const profileMetrics = computed(() => [
 const completedFields = computed(() => profileMetrics.value.filter(Boolean).length)
 const completionRate = computed(() =>
   Math.round((completedFields.value / profileMetrics.value.length) * 100)
+)
+
+const organizations = computed(() => {
+  const rawOrganizations = userData?.value?.organizations
+
+  if (Array.isArray(rawOrganizations)) {
+    return rawOrganizations.map((item) =>
+      typeof item === 'string' ? item : item?.id || item?.organizationId || ''
+    )
+  }
+
+  if (rawOrganizations && typeof rawOrganizations === 'object') {
+    return Object.keys(rawOrganizations)
+  }
+
+  return []
+})
+
+const certificationItems = computed(() => {
+  const organizationIds = new Set(organizations.value)
+
+  return [
+    {
+      id: 'qs6c6kl7yaw8',
+      title: '莓站-群友认证',
+      active: organizationIds.has('qs6c6kl7yaw8')
+    },
+    {
+      id: 'ogyizr4r62uu',
+      title: '莓站-赞助认证',
+      active: organizationIds.has('ogyizr4r62uu')
+    }
+  ]
+})
+
+const activeCertifications = computed(() =>
+  certificationItems.value.filter((item) => item.active)
 )
 
 const copyAccountId = async () => {
@@ -133,6 +171,36 @@ const copyAccountId = async () => {
                 </div>
                 <div class="mt-2 text-sm font-semibold text-foreground">{{ localeText }}</div>
               </div>
+            </div>
+
+            <div class="border border-border/70 bg-secondary/35 p-3">
+              <div
+                class="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground"
+              >
+                <BadgeCheck :size="14" />
+                认证信息
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span
+                  v-for="item in certificationItems"
+                  :key="item.id"
+                  class="material-chip"
+                  :class="item.active ? 'tonal' : ''"
+                >
+                  {{ item.title }}
+                  <span class="ml-1 text-[10px]">{{ item.active ? '已认证' : '未认证' }}</span>
+                </span>
+              </div>
+              <p class="mt-3 text-sm text-muted-foreground">
+                {{
+                  activeCertifications.length
+                    ? `当前已获得 ${activeCertifications.length} 项认证`
+                    : '当前暂未获得认证，可联系管理员开通'
+                }}
+              </p>
+              <Button as-child variant="secondary" class="mt-3 h-8 rounded-lg border border-border/70">
+                <router-link to="/account/verifications">查看认证详情</router-link>
+              </Button>
             </div>
           </div>
 
